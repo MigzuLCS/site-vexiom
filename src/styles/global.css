@@ -101,3 +101,9 @@ html:not(.js) [data-pergunta] [inert] {
 html:not(.js) [data-pergunta] [inert] p {
   opacity: 1;
 }
+
+/* Seção que recebe o foco ao navegar por um link (irParaSecao põe tabindex="-1"): o foco
+   vai para lá por acessibilidade, mas a seção não é clicável e não precisa de contorno. */
+section[tabindex='-1']:focus {
+  outline: none;
+}

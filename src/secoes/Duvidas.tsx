@@ -3,7 +3,7 @@
 import { useId, useRef, useState } from 'react'
 import { gsap, useGSAP, REDUZIR } from '@/lib/gsap'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { VAGAS_FUNDADOR, linkWhatsapp } from '@/conteudo'
+import { VAGAS_FUNDADOR, linkContato } from '@/conteudo'
 import { cn } from '@/lib/utils'
 
 // Respostas só com o que está no Notion (Planos e preços). Sem dado, sem pergunta.
@@ -67,7 +67,7 @@ export function Duvidas() {
             Não achou a sua? Pergunta direto pra gente.
           </p>
           <div data-duvidas-entra className="mt-8">
-            <InteractiveHoverButton href={linkWhatsapp('Tenho uma dúvida sobre o site')} texto="Fale com a gente" tom="solido" />
+            <InteractiveHoverButton href={linkContato('Tenho uma dúvida sobre o site')} texto="Fale com a gente" tom="solido" />
           </div>
         </div>
 

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, useGSAP, REDUZIR, prefereReduzir } from '@/lib/gsap'
 import { travarRolagem, emNavegacao } from '@/components/SmoothScroll'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { linkWhatsapp } from '@/conteudo'
+import { linkContato } from '@/conteudo'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/Logo'
 
@@ -202,7 +202,7 @@ export function Menu() {
                 </li>
               ))}
               <li className="ml-1 flex">
-                <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tom={inv ? 'solido-inverso' : 'solido'} className="h-full" />
+                <InteractiveHoverButton href={linkContato()} texto="Fale com a gente" tom={inv ? 'solido-inverso' : 'solido'} className="h-full" />
               </li>
             </ul>
           </nav>
@@ -245,7 +245,7 @@ export function Menu() {
           ))}
         </ul>
         <div data-painel-item className="mt-10">
-          <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente no WhatsApp" tamanho="lg" tom="escuro" className="w-full" onClick={() => setAberto(false)} />
+          <InteractiveHoverButton href={linkContato()} texto="Fale com a gente no WhatsApp" tamanho="lg" tom="escuro" className="w-full" onClick={() => setAberto(false)} />
         </div>
       </div>
     </>

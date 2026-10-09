@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import { gsap, useGSAP, REDUZIR } from '@/lib/gsap'
 import { GradeDiagonal } from '@/components/fundos/GradeDiagonal'
 import { TextoDigitado } from '@/components/TextoDigitado'
-import { linkWhatsapp } from '@/conteudo'
+import { linkContato } from '@/conteudo'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { Magnetico } from '@/components/Magnetico'
 

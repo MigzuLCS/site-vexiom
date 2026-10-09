@@ -5,16 +5,12 @@ import NumberFlow from '@number-flow/react'
 import { Check } from 'lucide-react'
 import { gsap, useGSAP, REDUZIR, MOVIMENTO } from '@/lib/gsap'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
-import { PLANOS, VAGAS_FUNDADOR, linkWhatsapp } from '@/conteudo'
+import { PLANOS, VAGAS_FUNDADOR, linkContato } from '@/conteudo'
 import { cn } from '@/lib/utils'
+import { LISTRAS_AZUIS } from '@/components/fundos/listras'
 
 type Tabela = 'fundador' | 'tabela'
 
-// Listras do padrão azul da marca (vexiom-padrao-azul.svg) refeitas em CSS: o SVG é uma arte
-// 1080×1080, não um ladrilho, e repetido deixava as listras quebradas nas emendas. Aqui o
-// padrão é contínuo: mesmas cores, ângulo da marca (1 para o lado a cada 2 na vertical =
-// 63,43°) e a proporção do SVG em meia escala (listra de 13,5 px a cada 50 px na horizontal).
-const LISTRAS = 'repeating-linear-gradient(63.43deg, #1e3a5f 0 31.2px, #24456f 31.2px 44.7px)'
 const REAIS = { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 } as const
 
 // Valor em reais. O HTML do build leva o número como texto (Google, prévia de link, sem JS);
@@ -57,7 +53,7 @@ export function Precos() {
         data-precos-listras
         aria-hidden="true"
         className="absolute inset-0 -z-10 opacity-70"
-        style={{ backgroundImage: LISTRAS }}
+        style={{ backgroundImage: LISTRAS_AZUIS }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_30%,transparent_20%,rgb(30_58_95/0.85)_75%)]" />
 
@@ -169,7 +165,7 @@ export function Precos() {
                 </ul>
 
                 <InteractiveHoverButton
-                  href={linkWhatsapp(`Quero o plano ${p.nome} para o meu negócio`)}
+                  href={linkContato(`Quero o plano ${p.nome} para o meu negócio`)}
                   texto={`Quero o ${p.nome}`}
                   tom={destaque ? 'solido' : 'escuro'}
                   className="mt-9 w-full"
