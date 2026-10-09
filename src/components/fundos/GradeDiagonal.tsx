@@ -21,7 +21,10 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
-    const parado = prefereReduzir()
+    // Com "reduzir movimento": deriva bem lenta e sem rastro do cursor (decisão do usuário:
+    // quem desliga as animações do Windows por desempenho ainda vê o fundo vivo).
+    const lento = prefereReduzir()
+    const ritmo = lento ? 0.25 : 1
     let w = 0
     let h = 0
     let cel = 56
@@ -134,12 +137,12 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
     const quadro = (t: number) => {
       const dt = Math.min((t - (antes || t)) / 1000, 0.05)
       antes = t
-      desloc.x += 6 * dt
-      desloc.y -= 12 * dt
+      desloc.x += 6 * ritmo * dt
+      desloc.y -= 12 * ritmo * dt
       for (let i = 0; i < blocos.length; i++) {
         const b = blocos[i]
-        b.x += (b.v / 2) * dt
-        b.y -= b.v * dt
+        b.x += (b.v / 2) * ritmo * dt
+        b.y -= b.v * ritmo * dt
         if (b.y < -cel * 3 || b.x > w + cel) blocos[i] = novoBloco(false)
       }
       atualizarAcesas()
@@ -166,10 +169,6 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
     }
 
     medir()
-    if (parado) {
-      desenhar()
-      return
-    }
 
     let visivel = true
     const iniciar = () => {
@@ -191,7 +190,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
     const aoVisibilidade = () => (document.hidden ? parar() : iniciar())
     const ro = new ResizeObserver(medir)
     ro.observe(canvas)
-    window.addEventListener('pointermove', aoMover, { passive: true })
+    if (!lento) window.addEventListener('pointermove', aoMover, { passive: true })
     document.addEventListener('visibilitychange', aoVisibilidade)
     iniciar()
 

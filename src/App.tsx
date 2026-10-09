@@ -1,16 +1,36 @@
+import { Menu } from '@/secoes/Menu'
 import { Hero } from '@/secoes/Hero'
+import { cn } from '@/lib/utils'
 
-// Seções entram uma a uma (docs/DIRECTION.md). Contato provisório até a seção existir.
+// Seções entram uma a uma (docs/DIRECTION.md). As provisórias só existem para o menu
+// ter destino; cada uma é substituída pela seção de verdade.
+function Provisoria({ id, titulo, escuro }: { id: string; titulo: string; escuro?: boolean }) {
+  return (
+    <section
+      id={id}
+      data-escuro={escuro ? '' : undefined}
+      className={cn('min-h-svh px-4 py-24 sm:px-8', escuro ? 'bg-tinta text-papel' : 'bg-papel text-tinta')}
+    >
+      <div className="mx-auto max-w-6xl">
+        <h2 className="text-3xl font-bold">{titulo}</h2>
+        <p className={cn('mt-3', escuro ? 'text-papel/70' : 'text-cinza')}>[PREENCHER] seção em construção.</p>
+      </div>
+    </section>
+  )
+}
+
 export default function App() {
   return (
-    <main>
-      <Hero />
-      <section id="contato" className="min-h-svh bg-azul px-4 py-24 text-papel sm:px-8">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold">Contato</h2>
-          <p className="mt-3 text-papel/80">[PREENCHER] WhatsApp, Instagram e e-mail.</p>
-        </div>
-      </section>
-    </main>
+    <>
+      <Menu />
+      <main>
+        <Hero />
+        <Provisoria id="quem-somos" titulo="Quem somos" />
+        <Provisoria id="capacidades" titulo="Capacidades" />
+        <Provisoria id="portfolio" titulo="Portfólio" escuro />
+        <Provisoria id="precos" titulo="Preços" />
+        <Provisoria id="contato" titulo="Contato" escuro />
+      </main>
+    </>
   )
 }

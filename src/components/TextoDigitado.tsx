@@ -15,7 +15,7 @@ type Props = {
   velocidade?: { min: number; max: number }
 }
 
-export function TextoDigitado({ texto, as: Tag = 'span', className, atraso = 400, velocidade = { min: 35, max: 85 } }: Props) {
+export function TextoDigitado({ texto, as: Tag = 'span', className, atraso = 250, velocidade = { min: 16, max: 38 } }: Props) {
   const [n, setN] = useState(() => (typeof window !== 'undefined' && prefereReduzir() ? texto.length : 0))
 
   useEffect(() => {

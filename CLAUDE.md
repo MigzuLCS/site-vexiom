@@ -24,7 +24,7 @@ Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria si
 4. Commits pequenos e descritivos no branch atual. **Não faça push nem PR sem o usuário pedir.**
 
 ## Regras que não se negociam
-- **Reduzir movimento:** com `prefers-reduced-motion`, todo conteúdo aparece no estado final, sem animação (o Lenis já se desliga sozinho). Efeitos decorativos (fundos WebGL, partículas) viram imagem parada ou somem.
+- **Reduzir movimento (meio-termo, decidido pelo usuário):** com `prefers-reduced-motion`, todo conteúdo aparece no estado final, sem entrada animada, e efeitos grandes (cortinas, seção horizontal, parallax, Lenis) ficam desligados. **Fundos decorativos continuam vivos, em deriva bem lenta** (≈ ¼ da velocidade) e sem reagir ao cursor. Motivo: muita gente desliga os efeitos de animação do Windows só por desempenho. O `npm run check` testa as duas versões.
 - **Conteúdo nunca depende da animação.** Texto e botões ficam visíveis se o efeito falhar, não carregar ou o WebGL não existir. Animação parte do estado de repouso (`gsap.from`, não esconder no CSS e revelar no JS).
 - **Celular primeiro:** cada efeito tem versão simples ou desligada no mobile (use `gsap.matchMedia()`). Nada de hover como única forma de acessar algo.
 - **Peso:** JS da **primeira carga até 400 KB gzip** (ideal < 250). Efeitos pesados (three.js, ogl, cenas WebGL) entram com `React.lazy`/`import()` só quando a seção chega perto da tela. LCP local < 2,5 s no celular.

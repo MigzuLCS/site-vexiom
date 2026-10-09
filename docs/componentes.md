@@ -32,6 +32,7 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 |---|---|---|---|---|
 | GradeDiagonal | React Bits ShapeGrid | fundo do hero | — | cores da marca, retina, deriva 63,4°, blocos laranja 1:2, cursor pela janela, para fora da tela |
 | TextoDigitado | React Bits TextType | título do hero | — | cursor = bloco laranja, texto reserva espaço, frase completa para leitor de tela, reduzir movimento |
+| Menu | ideia do React Bits PillNav (sem código copiado) | menu fixo | — | bloco laranja desliza até a seção ativa, tema escuro por seção, cortina diagonal no celular |
 | Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
 
 ## Pesquisa no 21st.dev
