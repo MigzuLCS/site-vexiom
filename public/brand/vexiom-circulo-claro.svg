@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <circle cx="256" cy="256" r="256" fill="#F5F2EC"/>
+  <g transform="translate(61.44 161.09) scale(1.04602)">
+  <clipPath id="vexiom-circulo-claro"><rect width="372" height="181.47"/></clipPath>
+  <g clip-path="url(#vexiom-circulo-claro)"><g transform="translate(-654.29 -19.45)">
+    <rect fill="#141414" x="715.46" y="101.36" width="243.46" height="27.22" transform="translate(359.97 812.37) rotate(-63.44)"/>
+    <polygon fill="#141414" points="801.5 256.33 668.12 17.59 692.41 4.49 825.79 243.23 801.5 256.33"/>
+    <polygon fill="#141414" points="834.74 78.25 792.35 2.38 768.06 15.47 819.82 108.1 834.74 78.25"/>
+    <polygon fill="#141414" points="856.7 117.56 841.78 147.41 901.44 254.21 925.73 241.11 856.7 117.56"/>
+    <polygon fill="#141414" points="904.46 22.03 889.54 51.89 1001.39 252.09 1025.68 239 904.46 22.03"/>
+    <rect fill="#F26B1D" x="674.34" y="142.95" width="27.22" height="57.97"/>
+  </g></g>
+  </g>
+</svg>

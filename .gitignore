@@ -1,0 +1,9 @@
+node_modules
+dist
+.check
+docs/repertorio/.capturas
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

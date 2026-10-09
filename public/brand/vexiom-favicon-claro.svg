@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="32" height="32">
+  <rect width="320" height="320" rx="70" fill="#F5F2EC"/>
+  <clipPath id="fb"><rect x="0" y="78" width="320" height="164"/></clipPath>
+  <g clip-path="url(#fb)" fill="none" stroke-linecap="butt">
+    <line x1="101" y1="38" x2="223" y2="282" stroke="#141414" stroke-width="36"/>
+    <line x1="181" y1="38" x2="303" y2="282" stroke="#141414" stroke-width="36"/>
+    <line x1="101" y1="282" x2="223" y2="38" stroke="#F5F2EC" stroke-width="68"/>
+    <line x1="101" y1="282" x2="223" y2="38" stroke="#141414" stroke-width="36"/>
+    <line x1="19" y1="38" x2="141" y2="282" stroke="#141414" stroke-width="36"/>
+  </g>
+  <rect x="29" y="176" width="36" height="66" fill="#F26B1D"/>
+</svg>
