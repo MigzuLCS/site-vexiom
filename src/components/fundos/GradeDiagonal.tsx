@@ -25,6 +25,7 @@ type Bloco = { x: number; y: number; v: number; escala: number; cheio: boolean; 
 
 export function GradeDiagonal({ className = '', tom = 'claro' }: { className?: string; tom?: 'claro' | 'escuro' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const vinhetaRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -63,6 +64,14 @@ export function GradeDiagonal({ className = '', tom = 'claro' }: { className?: s
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       cel = w < 640 ? 40 : 56
+      // bordas somem no papel: mesma vinheta que antes era pintada no canvas a cada quadro
+      // (um degradê radial da tela inteira por quadro), agora uma camada CSS calculada só aqui
+      const v = vinhetaRef.current
+      if (v) {
+        const r0 = Math.min(w, h) * 0.35
+        const r1 = Math.hypot(w, h) / 2
+        v.style.background = `radial-gradient(circle ${r1}px at 50% 50%, rgba(${PAPEL}, 0) ${r0}px, rgba(${PAPEL}, 0.9) ${r1}px)`
+      }
       const total = Math.round(Math.min(14, Math.max(5, (w * h) / 90000)))
       blocos = Array.from({ length: total }, () => novoBloco(true))
     }
@@ -125,13 +134,6 @@ export function GradeDiagonal({ className = '', tom = 'claro' }: { className?: s
         }
       }
 
-      // bordas somem no papel
-      if (escuro) return
-      const v = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.hypot(w, h) / 2)
-      v.addColorStop(0, `rgba(${PAPEL}, 0)`)
-      v.addColorStop(1, `rgba(${PAPEL}, 0.9)`)
-      ctx.fillStyle = v
-      ctx.fillRect(0, 0, w, h)
     }
 
     const atualizarAcesas = () => {
@@ -217,5 +219,10 @@ export function GradeDiagonal({ className = '', tom = 'claro' }: { className?: s
     }
   }, [tom])
 
-  return <canvas ref={canvasRef} aria-hidden="true" className={`block h-full w-full ${className}`} />
+  return (
+    <>
+      <canvas ref={canvasRef} aria-hidden="true" className={`block h-full w-full ${className}`} />
+      {tom === 'claro' && <div ref={vinhetaRef} aria-hidden="true" className="pointer-events-none absolute inset-0" />}
+    </>
+  )
 }

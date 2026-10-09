@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
-import '@fontsource-variable/red-hat-display'
-import '@fontsource-variable/montserrat'
 import '@/styles/global.css'
 import { Provedores } from '@/components/Provedores'
+import { montserrat, redHat } from './fontes'
 
 export const metadata: Metadata = {
   title: 'Vexiom · estúdio de sites',
@@ -26,7 +25,7 @@ const marcarJs = `document.documentElement.classList.add('js');setTimeout(functi
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
+    <html lang="pt-BR" className={`${montserrat.variable} ${redHat.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: marcarJs }} />
       </head>

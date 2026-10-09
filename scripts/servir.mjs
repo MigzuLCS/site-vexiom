@@ -1,9 +1,12 @@
 // Servidor estático mínimo para a pasta out/ (build do Next com output: 'export').
-// Usado pelo check e por "npm start". Sem dependências.
+// Usado pelo check e por "npm start". Sem dependências. Comprime texto (gzip) e põe cache
+// longo nos arquivos com hash (_next/static), como uma hospedagem real (Cloudflare, Netlify),
+// para as medições de desempenho locais não saírem piores do que em produção.
 import { createServer } from 'node:http'
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { extname, join, normalize } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { createGzip } from 'node:zlib'
 
 const TIPOS = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
@@ -24,8 +27,19 @@ export function servir(pasta, porta = 0) {
       res.writeHead(404, { 'content-type': TIPOS['.html'] })
       return existsSync(nf) ? createReadStream(nf).pipe(res) : res.end('404')
     }
-    res.writeHead(200, { 'content-type': TIPOS[extname(arquivo)] ?? 'application/octet-stream' })
-    createReadStream(arquivo).pipe(res)
+    const tipo = TIPOS[extname(arquivo)] ?? 'application/octet-stream'
+    const cabecalhos = {
+      'content-type': tipo,
+      'cache-control': caminho.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate',
+    }
+    const comprimir = /text|javascript|json|svg/.test(tipo) && /gzip/.test(req.headers['accept-encoding'] ?? '')
+    if (comprimir) {
+      res.writeHead(200, { ...cabecalhos, 'content-encoding': 'gzip', vary: 'accept-encoding' })
+      createReadStream(arquivo).pipe(createGzip()).pipe(res)
+    } else {
+      res.writeHead(200, cabecalhos)
+      createReadStream(arquivo).pipe(res)
+    }
   })
   return new Promise((ok) => servidor.listen(porta, '127.0.0.1', () => ok({ url: `http://127.0.0.1:${servidor.address().port}/`, fechar: () => servidor.close() })))
 }

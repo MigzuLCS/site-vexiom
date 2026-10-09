@@ -52,6 +52,9 @@ export function Menu() {
     }
     sincronizar()
     ScrollTrigger.addEventListener('refresh', sincronizar)
+    // esconder/mostrar: só anima quando o estado muda (antes criava uma animação nova a cada
+    // quadro de rolagem)
+    let escondido = false
     ScrollTrigger.create({
       start: 0,
       end: 'max',
@@ -59,6 +62,8 @@ export function Menu() {
         sincronizar()
         if (prefereReduzir()) return
         const esconder = st.direction === 1 && st.scroll() > 400 && !emNavegacao()
+        if (esconder === escondido) return
+        escondido = esconder
         gsap.to(raiz.current, { yPercent: esconder ? -160 : 0, duration: 0.4, overwrite: 'auto' })
       },
     })
