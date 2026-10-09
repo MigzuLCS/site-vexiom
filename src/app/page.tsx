@@ -2,6 +2,7 @@ import { Menu } from '@/secoes/Menu'
 import { Hero } from '@/secoes/Hero'
 import { QuemSomos } from '@/secoes/QuemSomos'
 import { Capacidades } from '@/secoes/Capacidades'
+import { Portfolio } from '@/secoes/Portfolio'
 import { cn } from '@/lib/utils'
 
 // Seções entram uma a uma (docs/DIRECTION.md). As provisórias só existem para o menu
@@ -29,7 +30,7 @@ export default function Pagina() {
         <Hero />
         <QuemSomos />
         <Capacidades />
-        <Provisoria id="portfolio" titulo="Portfólio" escuro />
+        <Portfolio />
         <Provisoria id="precos" titulo="Preços" />
         <Provisoria id="contato" titulo="Contato" escuro />
       </main>

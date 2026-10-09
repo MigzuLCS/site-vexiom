@@ -135,11 +135,15 @@ function clippedHeadings() {
     const area = r.width * r.height
     if (!area) return 1
     let box = { l: r.left, t: r.top, r: r.right, b: r.bottom }
+    // trilho horizontal (data-horizontal): card fora da tela pelos lados é esperado; só o corte vertical conta
+    const horizontal = !!el.closest('[data-horizontal]')
     for (let n = el.parentElement; n && n !== document.body; n = n.parentElement) {
       const cs = getComputedStyle(n)
       if (cs.overflowX === 'visible' && cs.overflowY === 'visible') continue
       const p = n.getBoundingClientRect()
-      box = { l: Math.max(box.l, p.left), t: Math.max(box.t, p.top), r: Math.min(box.r, p.right), b: Math.min(box.b, p.bottom) }
+      box = horizontal
+        ? { l: box.l, t: Math.max(box.t, p.top), r: box.r, b: Math.min(box.b, p.bottom) }
+        : { l: Math.max(box.l, p.left), t: Math.max(box.t, p.top), r: Math.min(box.r, p.right), b: Math.min(box.b, p.bottom) }
     }
     return Math.max(0, box.r - box.l) * Math.max(0, box.b - box.t) / area
   }

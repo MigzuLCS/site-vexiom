@@ -30,7 +30,7 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 ## Componentes em uso
 | componente | origem | onde no site | dependências extras | adaptações |
 |---|---|---|---|---|
-| GradeDiagonal | React Bits ShapeGrid | fundo do hero | — | cores da marca, retina, deriva 63,4°, blocos laranja 1:2, cursor pela janela, para fora da tela |
+| GradeDiagonal (tom claro/escuro) | React Bits ShapeGrid | fundo do hero | — | cores da marca, retina, deriva 63,4°, blocos laranja 1:2, cursor pela janela, para fora da tela |
 | TextoDigitado | React Bits TextType | título do hero | — | cursor = bloco laranja, texto reserva espaço, frase completa para leitor de tela, reduzir movimento |
 | Menu | React Bits PillNav (adaptado; GlassSurface testado e recusado pelo usuário: não combina com a marca) | menu: logo solta à esquerda, trilha de pílulas à direita | — | sem react-router; trilha clara com borda fina e itens em texto (a versão Tinta/Papel pesou no desktop), botão de contato sólido dentro da trilha; bloco laranja no item ativo (no original, bolinha); foco do teclado faz o mesmo que o hover; cortina diagonal no celular |
 | InteractiveHoverButton | 21st.dev Interactive Hover Button (dillionverma, código colado pelo usuário) | botões do menu, hero (tom sólido) e menu do celular | lucide-react | vira <a>, largura pelo texto, ponto = bloco laranja parado que cresce (só o cursor do título pisca), tons claro/escuro, foco igual ao hover |
@@ -39,6 +39,8 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 | Magnetico | React Bits Magnet | botão do hero | — | GSAP quickTo, só mouse, desligado com reduzir movimento |
 | Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
 | FaixaVelocidade | React Bits ScrollVelocity | fim de Capacidades | — | relógio do GSAP no lugar do motion, componente interno fora do render, pausa fora da tela, cópias com aria-hidden, separador = bloco laranja, reduzir movimento = ¼ da velocidade |
+| Grainient | React Bits Grainient (ogl, WebGL2) | fundo do Portfólio | ogl | sob demanda (next/dynamic, só desktop e perto da tela), sem WebGL2 não faz nada, contexto liberado ao desmontar, reduzir movimento = ¼ da velocidade |
+| Trilho horizontal (Portfólio) | receita secao-horizontal-fixa | Portfólio | — | `data-horizontal` liga o layout em linha só no desktop com movimento; sem JS/reduzir = grade. O check ignora corte lateral de títulos dentro de `[data-horizontal]` |
 | Lista de capacidades | ideia de 21st Super Hover List (sem código copiado) | Capacidades | — | faixa Tinta diagonal no hover só em CSS; conteúdo todo visível sem hover |
 
 ## Pesquisa no 21st.dev

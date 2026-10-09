@@ -6,6 +6,8 @@ import { prefereReduzir } from '@/lib/gsap'
 // (1 para o lado a cada 2 para cima = 63,4°), barras laranja no desenho das barras do
 // símbolo sobem pela mesma diagonal, e o cursor é lido na janela inteira
 // (o conteúdo do hero fica por cima do canvas).
+// tom "escuro": a mesma grade, fraca, sobre fundos escuros (portfólio): linhas e barras em
+// Papel com um pouco de Laranja, sem vinheta de papel.
 
 const TINTA = '20, 20, 20'
 const LARANJA = '242, 107, 29'
@@ -13,14 +15,15 @@ const PAPEL = '245, 242, 236'
 const AZUL = '30, 58, 95'
 
 // Laranja é tempero (docs/marca.md): a maioria das barras é Azul ou Tinta.
-const sortearCor = () => {
+const sortearCor = (escuro: boolean) => {
   const r = Math.random()
+  if (escuro) return r < 0.7 ? PAPEL : LARANJA
   return r < 0.45 ? AZUL : r < 0.75 ? TINTA : LARANJA
 }
 
 type Bloco = { x: number; y: number; v: number; escala: number; cheio: boolean; alfa: number; cor: string }
 
-export function GradeDiagonal({ className = '' }: { className?: string }) {
+export function GradeDiagonal({ className = '', tom = 'claro' }: { className?: string; tom?: 'claro' | 'escuro' }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -31,6 +34,9 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
     // Com "reduzir movimento": deriva bem lenta e sem rastro do cursor (decisão do usuário:
     // quem desliga as animações do Windows por desempenho ainda vê o fundo vivo).
     const lento = prefereReduzir()
+    const escuro = tom === 'escuro'
+    const LINHA = escuro ? PAPEL : TINTA
+    const LUZ = escuro ? PAPEL : AZUL
     const ritmo = lento ? 0.25 : 1
     let w = 0
     let h = 0
@@ -46,7 +52,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       // nascem embaixo (ou espalhados na primeira tela) e sobem para a direita
       const y = inicio ? Math.random() * h : h + cel * 2 + Math.random() * h * 0.5
       const x = Math.random() * (w + h * 0.5) - h * 0.5
-      return { x, y, v: 18 + Math.random() * 34, escala, cheio: Math.random() < 0.55, alfa: 0.7 + Math.random() * 0.3, cor: sortearCor() }
+      return { x, y, v: 18 + Math.random() * 34, escala, cheio: Math.random() < 0.55, alfa: (0.7 + Math.random() * 0.3) * (escuro ? 0.45 : 1), cor: sortearCor(escuro) }
     }
 
     const medir = () => {
@@ -69,12 +75,12 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       // células acesas pelo cursor
       for (const [chave, a] of acesas) {
         const [c, r] = chave.split(',').map(Number)
-        ctx.fillStyle = `rgba(${AZUL}, ${a * 0.12})`
+        ctx.fillStyle = `rgba(${LUZ}, ${a * (escuro ? 0.06 : 0.12)})`
         ctx.fillRect(c * cel + ox - cel, r * cel + oy - cel, cel, cel)
       }
 
       // grade
-      ctx.strokeStyle = `rgba(${TINTA}, 0.07)`
+      ctx.strokeStyle = `rgba(${LINHA}, ${escuro ? 0.05 : 0.07})`
       ctx.lineWidth = 1
       ctx.beginPath()
       for (let x = ox - cel; x <= w + cel; x += cel) {
@@ -120,6 +126,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       }
 
       // bordas somem no papel
+      if (escuro) return
       const v = ctx.createRadialGradient(w / 2, h / 2, Math.min(w, h) * 0.35, w / 2, h / 2, Math.hypot(w, h) / 2)
       v.addColorStop(0, `rgba(${PAPEL}, 0)`)
       v.addColorStop(1, `rgba(${PAPEL}, 0.9)`)
@@ -208,7 +215,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       window.removeEventListener('pointermove', aoMover)
       document.removeEventListener('visibilitychange', aoVisibilidade)
     }
-  }, [])
+  }, [tom])
 
   return <canvas ref={canvasRef} aria-hidden="true" className={`block h-full w-full ${className}`} />
 }
