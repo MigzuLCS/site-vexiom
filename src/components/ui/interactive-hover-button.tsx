@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 // Mudanças: é um link (<a>), não <button>; largura pelo texto (o original fixava w-32);
 // o ponto que cresce é o bloco laranja da logo (retângulo 1:2), parado (só o cursor do
 // título pisca, para não competir); ao crescer vira o fundo laranja e o texto entra com a seta.
+// Contorno é ring interno (não border): o laranja que cresce cobre tudo, sem sobrar aro.
 // Tamanhos: "md" e "lg". Tom "claro"/"escuro" conforme o fundo; "solido" (Tinta) para a ação principal.
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
   texto: string
@@ -18,12 +19,12 @@ export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
     <a
       ref={ref}
       className={cn(
-        'group relative isolate inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-full border font-semibold whitespace-nowrap',
+        'group relative isolate inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-full font-semibold ring-1 ring-inset whitespace-nowrap transition-[background-color,box-shadow] delay-150 duration-200 hover:bg-laranja hover:ring-transparent focus-visible:bg-laranja focus-visible:ring-transparent',
         tamanho === 'md' ? 'h-11 pr-5 pl-9 text-sm' : 'h-14 pr-8 pl-12 text-base',
-        tom === 'claro' && 'border-tinta/15 bg-papel/70 text-tinta',
-        tom === 'escuro' && 'border-papel/25 bg-papel/10 text-papel',
-        tom === 'solido' && 'border-tinta bg-tinta text-papel',
-        tom === 'solido-inverso' && 'border-papel bg-papel text-tinta',
+        tom === 'claro' && 'bg-papel/70 text-tinta ring-tinta/15',
+        tom === 'escuro' && 'bg-papel/10 text-papel ring-papel/25',
+        tom === 'solido' && 'bg-tinta text-papel ring-transparent',
+        tom === 'solido-inverso' && 'bg-papel text-tinta ring-transparent',
         className,
       )}
       {...props}

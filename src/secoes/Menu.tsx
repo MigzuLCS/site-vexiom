@@ -151,7 +151,7 @@ export function Menu() {
             <Logo rotulo="Vexiom, início" className={cn('h-7 w-auto transition-colors duration-300', inv ? 'text-papel' : 'text-tinta')} />
           </a>
 
-          <nav aria-label="Principal" className="hidden md:block">
+          <nav aria-label="Principal" className="hidden lg:block">
             <ul
               data-menu-entra
               ref={trilha}
@@ -204,7 +204,7 @@ export function Menu() {
             aria-controls="menu-celular"
             onClick={() => setAberto((v) => !v)}
             className={cn(
-              'flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors duration-300 md:hidden',
+              'flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors duration-300 lg:hidden',
               inv ? 'bg-papel text-tinta' : 'bg-tinta text-papel',
             )}
           >
@@ -218,7 +218,7 @@ export function Menu() {
         id="menu-celular"
         ref={painel}
         inert={!aberto}
-        className="fixed inset-0 z-40 flex flex-col justify-end bg-tinta px-4 pt-24 pb-10 text-papel md:hidden"
+        className="fixed inset-0 z-40 flex flex-col justify-end bg-tinta px-4 pt-24 pb-10 text-papel lg:hidden"
       >
         <ul className="space-y-1">
           {SECOES.map((s) => (
