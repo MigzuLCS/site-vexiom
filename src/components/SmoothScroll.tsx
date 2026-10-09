@@ -12,6 +12,12 @@ export function travarRolagem(travar: boolean) {
   else lenis?.start()
 }
 
+// Rola até uma posição (suave com Lenis; nativo quando ele está desligado).
+export function rolarPara(y: number) {
+  if (lenis) lenis.scrollTo(y, { duration: 1.1 })
+  else window.scrollTo({ top: y, behavior: prefereReduzir() ? 'instant' : 'smooth' })
+}
+
 // Lenis dirigido pelo relógio do GSAP, para ScrollTrigger e rolagem andarem juntos.
 // Com "reduzir movimento", não liga: fica a rolagem nativa do navegador.
 export function SmoothScroll({ children }: { children: ReactNode }) {

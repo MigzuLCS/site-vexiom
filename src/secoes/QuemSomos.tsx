@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
-import { gsap, useGSAP, REDUZIR, MOVIMENTO } from '@/lib/gsap'
+import { gsap, useGSAP, ScrollTrigger, REDUZIR, MOVIMENTO } from '@/lib/gsap'
 import { TextoRevelado } from '@/components/TextoRevelado'
+import { rolarPara } from '@/components/SmoothScroll'
 import { cn } from '@/lib/utils'
 
 const PASSOS = [
@@ -19,6 +20,9 @@ export function QuemSomos() {
   const raiz = useRef<HTMLElement>(null)
   const palco = useRef<HTMLDivElement>(null)
   const [passo, setPasso] = useState<number | null>(null)
+  // desktop: o gatilho fixo (clique rola até o passo); celular: a timeline (clique anima até o passo)
+  const fixo = useRef<ScrollTrigger | null>(null)
+  const solta = useRef<gsap.core.Timeline | null>(null)
 
   useGSAP(
     () => {
@@ -38,12 +42,13 @@ export function QuemSomos() {
       const mm = gsap.matchMedia()
       mm.add(`(min-width: 1024px) and ${MOVIMENTO}`, () => {
         setPasso(0)
-        montagem(
+        const tl = montagem(
           gsap.timeline({
             defaults: { ease: 'vexiom' },
             scrollTrigger: {
               trigger: palco.current,
-              start: 'top top+=96',
+              // centro da área fixa no centro do espaço abaixo do menu
+              start: 'center center+=40',
               end: '+=1600',
               pin: true,
               scrub: 0.6,
@@ -51,10 +56,27 @@ export function QuemSomos() {
             },
           }),
         )
-        return () => setPasso(null)
+        fixo.current = tl.scrollTrigger ?? null
+        return () => {
+          fixo.current = null
+          setPasso(null)
+        }
       })
       mm.add(`(max-width: 1023px) and ${MOVIMENTO}`, () => {
-        montagem(gsap.timeline({ defaults: { ease: 'vexiom' }, scrollTrigger: { trigger: '[data-janela]', start: 'top 75%' } }))
+        solta.current = montagem(
+          gsap.timeline({
+            defaults: { ease: 'vexiom' },
+            scrollTrigger: { trigger: '[data-janela]', start: 'top 75%' },
+            onUpdate() {
+              // passo i termina no tempo i + 1: o tempo exato 1 ainda é "Conversa"
+              setPasso(Math.min(2, Math.max(0, Math.ceil(this.time()) - 1)))
+            },
+          }),
+        )
+        return () => {
+          solta.current = null
+          setPasso(null)
+        }
       })
       mm.add(`not all and ${REDUZIR}`, () => {
         gsap.from('[data-qs-entra]', { opacity: 0, x: -10, y: 20, stagger: 0.08, scrollTrigger: { trigger: '[data-qs-entra]', start: 'top 85%' } })
@@ -62,6 +84,13 @@ export function QuemSomos() {
     },
     { scope: raiz },
   )
+
+  const irPara = (i: number) => {
+    setPasso(i)
+    const st = fixo.current
+    if (st) rolarPara(st.start + ((i + 0.85) / 3) * (st.end - st.start))
+    else solta.current?.tweenTo(i + 1, { duration: 0.9, ease: 'vexiom' })
+  }
 
   return (
     <section
@@ -88,17 +117,30 @@ export function QuemSomos() {
           {PASSOS.map((p, i) => {
             const ativo = passo === null || passo === i
             return (
-              <li key={p.titulo} className={cn('flex gap-5 transition-opacity duration-500', ativo ? 'opacity-100' : 'opacity-35')}>
+              <li key={p.titulo}>
+                <button
+                  type="button"
+                  onClick={() => irPara(i)}
+                  aria-pressed={passo === i}
+                  className={cn(
+                    'group flex w-full cursor-pointer gap-5 text-left transition-opacity duration-500 hover:opacity-100',
+                    ativo ? 'opacity-100' : 'opacity-35',
+                  )}
+                >
                 <span
                   aria-hidden="true"
                   className={cn('mt-1 flex h-9 w-9 shrink-0 items-center justify-center text-sm font-bold transition-colors duration-500', ativo ? 'bg-tinta text-papel' : 'bg-tinta/10 text-tinta')}
                 >
                   {i + 1}
                 </span>
-                <div>
-                  <h3 className="text-2xl font-bold tracking-tight">{p.titulo}</h3>
-                  <p className="mt-2 max-w-sm leading-relaxed text-cinza">{p.texto}</p>
-                </div>
+                <span className="block">
+                  <span className="flex items-center gap-3 text-2xl font-bold tracking-tight">
+                    {p.titulo}
+                    <span aria-hidden="true" className="h-0.5 w-0 bg-laranja transition-[width] duration-300 ease-vexiom group-hover:w-6" />
+                  </span>
+                  <span className="mt-2 block max-w-sm leading-relaxed text-cinza">{p.texto}</span>
+                </span>
+                </button>
               </li>
             )
           })}
