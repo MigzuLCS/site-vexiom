@@ -137,7 +137,7 @@ export function Precos() {
                 <div className="mt-8">
                   <p className={cn('text-sm', destaque ? 'text-cinza' : 'text-papel/65')}>{p.aPartirDe ? 'Criação, a partir de' : 'Criação'}</p>
                   <p className="mt-1 flex items-baseline gap-3">
-                    <Valor valor={fundador ? p.criacao.fundador : p.criacao.tabela} className="text-5xl font-bold tracking-tight tabular-nums" />
+                    <Valor valor={fundador ? p.criacao.fundador : p.criacao.tabela} className="font-display text-5xl font-bold tracking-tight tabular-nums" />
                     {fundador && (
                       <span className={cn('text-base line-through', destaque ? 'text-cinza' : 'text-papel/50')}>
                         {p.criacao.tabela.toLocaleString('pt-BR', REAIS)}

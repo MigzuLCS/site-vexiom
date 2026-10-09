@@ -73,7 +73,7 @@ export function Contato() {
         <div data-contato-entra className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-3">
           <a
             href={linkEmail()}
-            className="group text-[clamp(1.5rem,4.5vw,3.25rem)] font-bold tracking-tight break-all decoration-laranja decoration-[3px] underline-offset-8 hover:underline focus-visible:underline"
+            className="group font-display text-[clamp(1.5rem,4.5vw,3.25rem)] font-bold tracking-tight break-all decoration-laranja decoration-[3px] underline-offset-8 hover:underline focus-visible:underline"
           >
             {EMAIL}
           </a>

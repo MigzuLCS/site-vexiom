@@ -156,7 +156,7 @@ export function QuemSomos() {
                     {i + 1}
                   </span>
                   <span className="block">
-                    <span className="flex items-center gap-3 text-2xl font-bold tracking-tight">
+                    <span className="flex items-center gap-3 font-display text-2xl font-bold tracking-tight">
                       {p.titulo}
                       <span aria-hidden="true" className="h-0.5 w-0 bg-laranja transition-[width] duration-300 ease-vexiom group-hover:w-6" />
                     </span>

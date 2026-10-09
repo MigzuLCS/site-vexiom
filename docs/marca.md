@@ -40,8 +40,10 @@ Regras:
 - Gradientes, brilhos e fundos animados (ex.: os do React Bits) só com cores da paleta e em efeito de fundo, nunca atrás de texto pequeno. Nada de roxo, neon ou arco-íris.
 
 ## Tipografia
-- **Red Hat Display** (Google Fonts): é a fonte do logotipo. Títulos em 600–700, texto em 400–500.
-- Um segundo par só se houver motivo forte; o padrão é uma família só.
+Definida no style guide do Figma ("Vexiom — Site", página 01 · Identidade Visual):
+- **Red Hat Display** (fonte do logotipo): títulos (`h1`–`h3` já usam) e palavras/números de destaque (classe `font-display`: faixa de tecnologias, preços, e-mail grande, nomes dos passos).
+- **Montserrat**: textos, botões, menu, rótulos e legendas (fonte padrão do `body`, `--font-sans`).
+- As duas são auto-hospedadas via `@fontsource-variable` (nada de Google Fonts em tempo de execução).
 
 ## Linguagem de movimento (o que torna o site "Vexiom")
 O site é bem dinâmico e pode usar efeitos de biblioteca (GSAP, React Bits, 21st.dev). Os gestos abaixo saem da logo e são a **assinatura**: aparecem nos momentos-chave (abertura, transições, CTA) e dão unidade ao resto. Efeito de biblioteca entra recolorido e no ritmo da marca (`docs/componentes.md`).

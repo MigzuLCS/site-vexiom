@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 import '@fontsource-variable/red-hat-display'
-import '@fontsource-variable/red-hat-display/wght-italic.css'
+import '@fontsource-variable/montserrat'
 import '@/styles/global.css'
 import { Provedores } from '@/components/Provedores'
 

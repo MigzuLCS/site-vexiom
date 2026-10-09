@@ -53,7 +53,7 @@ export function FaixaVelocidade({ linhas, velocidade = 50, className }: Props) {
   }, [velocidade])
 
   return (
-    <div ref={raiz} className={cn('overflow-hidden', className)}>
+    <div ref={raiz} className={cn('overflow-hidden font-display', className)}>
       <ul className="sr-only">
         {linhas.flat().map((p) => (
           <li key={p}>{p}</li>

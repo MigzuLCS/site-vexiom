@@ -11,7 +11,10 @@
   --color-azul: #1e3a5f;
   --color-cinza: #6b6760;
 
-  --font-sans: 'Red Hat Display Variable', ui-sans-serif, system-ui, sans-serif;
+  /* style guide (Figma): Montserrat em textos, botões, rótulos e legendas; Red Hat Display
+     (fonte da logo) em títulos e números/palavras de destaque (classe font-display) */
+  --font-sans: 'Montserrat Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Red Hat Display Variable', ui-sans-serif, system-ui, sans-serif;
   --ease-vexiom: cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
@@ -58,6 +61,11 @@
     color: var(--color-tinta);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
   }
   :focus-visible {
     outline: 2px solid var(--color-laranja);
