@@ -14,10 +14,18 @@ const TIPOS = {
   '.woff2': 'font/woff2', '.woff': 'font/woff', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8',
 }
 
-export function servir(pasta, porta = 0) {
+// base: prefixo do GitHub Pages (ex.: /site-vexiom) para testar localmente como lá.
+export function servir(pasta, porta = 0, base = '') {
   const raiz = normalize(pasta)
   const servidor = createServer((req, res) => {
-    const caminho = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+    let caminho = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+    if (base) {
+      if (!caminho.startsWith(base)) {
+        res.writeHead(404, { 'content-type': TIPOS['.txt'] })
+        return res.end(`fora de ${base}/ (no GitHub Pages isso daria 404)`)
+      }
+      caminho = caminho.slice(base.length) || '/'
+    }
     let arquivo = normalize(join(raiz, caminho))
     if (!arquivo.startsWith(raiz)) return res.writeHead(403).end()
     if (existsSync(arquivo) && statSync(arquivo).isDirectory()) arquivo = join(arquivo, 'index.html')
@@ -41,10 +49,11 @@ export function servir(pasta, porta = 0) {
       createReadStream(arquivo).pipe(res)
     }
   })
-  return new Promise((ok) => servidor.listen(porta, '127.0.0.1', () => ok({ url: `http://127.0.0.1:${servidor.address().port}/`, fechar: () => servidor.close() })))
+  return new Promise((ok) => servidor.listen(porta, '127.0.0.1', () => ok({ url: `http://127.0.0.1:${servidor.address().port}${base}/`, fechar: () => servidor.close() })))
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const { url } = await servir(join(process.cwd(), 'out'), Number(process.env.PORT) || 3000)
+  const base = process.env.PAGES_BASE_PATH?.replace(/\/$/, '') ?? ''
+  const { url } = await servir(join(process.cwd(), 'out'), Number(process.env.PORT) || 3000, base)
   console.log(`servindo out/ em ${url}`)
 }

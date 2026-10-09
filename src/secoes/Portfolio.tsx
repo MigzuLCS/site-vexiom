@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { gsap, useGSAP, REDUZIR, MOVIMENTO } from '@/lib/gsap'
 import { GradeDiagonal } from '@/components/fundos/GradeDiagonal'
+import { caminho } from '@/lib/caminho'
 
 // WebGL (ogl) só no desktop e só quando a seção chega perto: fora da primeira carga.
 const Grainient = dynamic(() => import('@/components/Grainient'), { ssr: false })
@@ -147,7 +148,7 @@ export function Portfolio() {
                   <span className="size-2 rounded-full bg-tinta/15" />
                 </div>
                 <img
-                  src={`/portfolio/${p.slug}-desktop.webp`}
+                  src={caminho(`/portfolio/${p.slug}-desktop.webp`)}
                   alt={`Página inicial do projeto-modelo ${p.nome} no computador`}
                   width={1440}
                   height={900}
@@ -158,7 +159,7 @@ export function Portfolio() {
               </figure>
               <img
                 data-port-celular
-                src={`/portfolio/${p.slug}-celular.webp`}
+                src={caminho(`/portfolio/${p.slug}-celular.webp`)}
                 alt={`Página inicial do projeto-modelo ${p.nome} no celular`}
                 width={390}
                 height={844}

@@ -40,3 +40,10 @@ Instalação das skills do 21st: `npx @21st-dev/cli install-skill`.
 ## Integrações (só para quem tem acesso)
 - **Notion "Painel da Startup"**: preços, identidade visual, escopo das seções.
 - Logo e gerador: pasta compartilhada `Vexiom/logo/` (fonte dos SVGs em `public/brand/`).
+
+## Publicar (GitHub Pages)
+O workflow `.github/workflows/deploy.yml` faz o build e publica a cada push no `main` (ou à mão, aba Actions → "Publicar no GitHub Pages" → Run workflow). Serve para qualquer repositório de projeto sem editar nada: o caminho (`/<repositorio>/`) vem do próprio GitHub.
+1. Uma vez por repositório: **Settings → Pages → Source: GitHub Actions**.
+2. Push no `main` (ou rode o workflow). O endereço aparece no resumo do workflow: `https://<usuario>.github.io/<repositorio>/`.
+3. Antes de subir, teste como no Pages: `npm run pages:teste` (build com `/site-vexiom` e abre em `http://127.0.0.1:3000/site-vexiom/`). Depois, `npm run build` volta o `out/` para a raiz.
+   - No Git Bash do Windows, se passar `PAGES_BASE_PATH` à mão, use `MSYS_NO_PATHCONV=1` (senão o Bash troca `/site-vexiom` por um caminho do Windows). O `npm run pages:teste` já evita isso.

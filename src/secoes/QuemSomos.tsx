@@ -5,6 +5,7 @@ import { gsap, useGSAP, REDUZIR, MOVIMENTO } from '@/lib/gsap'
 import { TextoRevelado } from '@/components/TextoRevelado'
 import { rolarPara } from '@/components/SmoothScroll'
 import { cn } from '@/lib/utils'
+import { caminho } from '@/lib/caminho'
 
 const PASSOS = [
   { titulo: 'Conversa', texto: 'Você conta como funciona o seu negócio pelo WhatsApp. Sem formulário e sem termo técnico.' },
@@ -213,7 +214,7 @@ function Janela() {
             <span data-esboco className={cn(esboco, 'mt-5 block h-8 w-28 rounded-full')}><span data-cor className={cn(cor, 'rounded-full bg-laranja')} /></span>
           </div>
           <span data-esboco className={cn(esboco, 'block aspect-[4/3] rounded-md')}>
-            <span data-cor className={cn(cor, "bg-azul bg-[url('/brand/vexiom-padrao-azul.svg')] bg-cover")} />
+            <span data-cor className={cn(cor, 'bg-azul bg-cover')} style={{ backgroundImage: `url('${caminho('/brand/vexiom-padrao-azul.svg')}')` }} />
           </span>
         </div>
 

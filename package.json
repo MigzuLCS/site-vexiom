@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "tsc -p . && next build",
     "start": "node scripts/servir.mjs",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "pages:teste": "node scripts/pages-teste.mjs"
   },
   "dependencies": {
     "@fontsource-variable/montserrat": "^5.3.0",

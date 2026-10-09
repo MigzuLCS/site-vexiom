@@ -3,16 +3,17 @@ import type { ReactNode } from 'react'
 import '@/styles/global.css'
 import { Provedores } from '@/components/Provedores'
 import { montserrat, redHat } from './fontes'
+import { caminho } from '@/lib/caminho'
 
 export const metadata: Metadata = {
   title: 'Vexiom · estúdio de sites',
   description: 'Vexiom: estúdio que cria sites para negócios, do comércio local a sistemas sob medida.',
   icons: {
     icon: [
-      { url: '/brand/vexiom-favicon.svg', type: 'image/svg+xml' },
-      { url: '/brand/vexiom-favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: caminho('/brand/vexiom-favicon.svg'), type: 'image/svg+xml' },
+      { url: caminho('/brand/vexiom-favicon-32.png'), sizes: '32x32', type: 'image/png' },
     ],
-    apple: '/brand/vexiom-favicon-180.png',
+    apple: caminho('/brand/vexiom-favicon-180.png'),
   },
 }
 
