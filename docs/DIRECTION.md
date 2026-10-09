@@ -1,7 +1,7 @@
 # Direção: site da Vexiom
 
 **Conceito: "a gente constrói, e rápido".** O site se monta na frente da pessoa. As diagonais da logo (63,4°) são a estrutura de tudo: linhas em velocidade, cortes entre seções, revelações. O quadrado laranja é o cursor de quem está construindo. Papel e Tinta na maior parte; Laranja só no cursor, nos destaques e no botão; Azul nas seções escuras. Red Hat Display em tudo, com o peso 700 grande só em três momentos (hero, portfólio, preços).
-**Para quem:** dono de comércio local, no celular. Em 10 s: o que fazemos, quanto custa, WhatsApp (Notion). O dinamismo não pode atrasar isso.
+**Conteúdo:** não citar quantos sócios são; falar de "um estúdio" / "a gente". **Para quem:** dono de comércio local, no celular. Em 10 s: o que fazemos, quanto custa, WhatsApp (Notion). O dinamismo não pode atrasar isso.
 
 ## Seções
 1. **Menu** fixo e fino: logo horizontal, âncoras, botão WhatsApp. O quadrado laranja desliza até o item ativo. No celular, tela cheia com cortina diagonal.

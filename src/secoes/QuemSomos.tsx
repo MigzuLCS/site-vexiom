@@ -104,7 +104,8 @@ export function QuemSomos() {
           Quem somos
         </p>
         <TextoRevelado
-          texto="Somos a Vexiom, um estúdio de três sócios que cria sites para negócios: da loja do bairro ao sistema sob medida."
+          texto="Somos a Vexiom, um estúdio que cria sites para negócios: da loja do bairro ao sistema sob medida."
+          fixar
           className="mt-6 max-w-[22ch] text-[clamp(2rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight"
         />
         <p data-qs-entra className="mt-8 max-w-xl text-lg leading-relaxed text-cinza">
