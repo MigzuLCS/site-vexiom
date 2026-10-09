@@ -16,6 +16,7 @@ Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria si
 2. Vai trazer componente pronto? Leia `docs/componentes.md`.
 3. Para movimento: `docs/receitas/README.md` (abra só a receita que for usar). Para ideias: `docs/repertorio/INDEX.md`.
 4. As instruções de estrutura e conteúdo vêm do usuário.
+5. Máquina nova ou colaborador novo: `docs/ferramentas.md` (o que instalar, contas e skills).
 
 ## Processo
 1. **Direção antes de código.** Escreva `docs/DIRECTION.md` (máx. 30 linhas): conceito, hero, seções e a forma de cada uma, quais efeitos/componentes entram em cada seção. **Mostre um resumo curto ao usuário e espere o ok** antes de implementar.
