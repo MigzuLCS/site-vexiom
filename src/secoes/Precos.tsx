@@ -35,7 +35,7 @@ export function Precos() {
     () => {
       const mm = gsap.matchMedia()
       mm.add(MOVIMENTO, () => {
-        gsap.fromTo('[data-precos-listras]', { backgroundPositionY: '0px' }, { backgroundPositionY: '-240px', ease: 'none', scrollTrigger: { trigger: raiz.current, start: 'top bottom', end: 'bottom top', scrub: true } })
+        gsap.fromTo('[data-precos-listras]', { y: 0 }, { y: -240, ease: 'none', scrollTrigger: { trigger: raiz.current, start: 'top bottom', end: 'bottom top', scrub: true } })
       })
       mm.add(`not all and ${REDUZIR}`, () => {
         gsap.from('[data-precos-entra]', { autoAlpha: 0, x: -10, y: 20, stagger: 0.08, scrollTrigger: { trigger: raiz.current, start: 'top 70%' } })
@@ -52,7 +52,7 @@ export function Precos() {
       <div
         data-precos-listras
         aria-hidden="true"
-        className="absolute inset-0 -z-10 opacity-70"
+        className="absolute inset-x-0 top-0 -bottom-[240px] -z-10 opacity-70 will-change-transform"
         style={{ backgroundImage: LISTRAS_AZUIS }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_30%,transparent_20%,rgb(30_58_95/0.85)_75%)]" />
@@ -118,7 +118,7 @@ export function Precos() {
                 data-plano
                 className={cn(
                   'relative flex flex-col rounded-2xl p-7 sm:p-8',
-                  destaque ? 'bg-papel text-tinta shadow-[0_40px_90px_-30px_rgb(0_0_0/0.6)] lg:py-11' : 'bg-tinta/30 ring-1 ring-papel/15 ring-inset backdrop-blur-[2px]',
+                  destaque ? 'bg-papel text-tinta shadow-[0_40px_90px_-30px_rgb(0_0_0/0.6)] lg:py-11' : 'bg-tinta/30 ring-1 ring-papel/15 ring-inset',
                 )}
               >
                 <div className="flex items-start justify-between gap-4">

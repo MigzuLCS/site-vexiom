@@ -33,7 +33,7 @@ export function Contato() {
     () => {
       const mm = gsap.matchMedia()
       mm.add(MOVIMENTO, () => {
-        gsap.fromTo('[data-contato-listras]', { backgroundPositionY: '0px' }, { backgroundPositionY: '-160px', ease: 'none', scrollTrigger: { trigger: raiz.current, start: 'top bottom', end: 'bottom bottom', scrub: true } })
+        gsap.fromTo('[data-contato-listras]', { y: 0 }, { y: -160, ease: 'none', scrollTrigger: { trigger: raiz.current, start: 'top bottom', end: 'bottom bottom', scrub: true } })
       })
       mm.add(`not all and ${REDUZIR}`, () => {
         gsap.from('[data-contato-entra]', { autoAlpha: 0, x: -10, y: 20, stagger: 0.08, scrollTrigger: { trigger: '[data-contato-entra]', start: 'top 85%' } })
@@ -54,7 +54,7 @@ export function Contato() {
 
   return (
     <section ref={raiz} id="contato" data-escuro="" className="relative isolate overflow-hidden bg-azul text-papel">
-      <div data-contato-listras aria-hidden="true" className="absolute inset-0 -z-10 opacity-60" style={{ backgroundImage: LISTRAS_AZUIS }} />
+      <div data-contato-listras aria-hidden="true" className="absolute inset-x-0 top-0 -bottom-[160px] -z-10 opacity-60 will-change-transform" style={{ backgroundImage: LISTRAS_AZUIS }} />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_40%,transparent_15%,rgb(30_58_95/0.9)_70%)]" />
 
       <div className="mx-auto max-w-6xl px-4 pt-28 pb-16 sm:px-8 lg:pt-36">

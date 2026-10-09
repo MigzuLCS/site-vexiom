@@ -8,7 +8,7 @@ import { prefereReduzir } from '@/lib/gsap';
 // Mudanças: sem WebGL2 não faz nada (o fundo CSS de quem usa fica no lugar, sem erro de
 // shader no console); com "reduzir movimento" deriva a ¼ da velocidade; o relógio pausa fora
 // da tela em vez de pular quando ela volta; o contexto WebGL
-// é liberado ao desmontar. Carregado sob demanda (ogl fica fora da primeira carga).
+// é liberado ao desmontar; renderiza em 0,75× (fundo suave, metade do custo de GPU ou menos). Carregado sob demanda (ogl fica fora da primeira carga).
 
 interface GrainientProps {
   timeSpeed?: number;
@@ -191,7 +191,8 @@ const Grainient: React.FC<GrainientProps> = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      // gradiente suave: 0,75× basta e corta o custo por quadro (em retina, de ~5 mi para ~0,7 mi de pixels)
+      dpr: 0.75
     });
 
     const gl = renderer.gl;

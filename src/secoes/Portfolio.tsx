@@ -38,13 +38,26 @@ const PROJETOS = [
 export function Portfolio() {
   const raiz = useRef<HTMLElement>(null)
   const trilho = useRef<HTMLDivElement>(null)
+  const [perto, setPerto] = useState(false)
   const [webgl, setWebgl] = useState(false)
 
-  // liga o gradiente WebGL só no desktop e quando a seção está a menos de uma tela
+  // a seção está a menos de uma tela e meia: carrega as imagens (para nenhuma janela aparecer
+  // em branco) e, só no desktop, monta o gradiente WebGL quando o navegador estiver ocioso
+  // (compilar o shader trava um quadro; ocioso, a pessoa não sente)
   useEffect(() => {
     const el = raiz.current
-    if (!el || !matchMedia('(min-width: 1024px)').matches) return
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setWebgl(true), { rootMargin: '100% 0px' })
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        setPerto(true)
+        io.disconnect()
+        if (!matchMedia('(min-width: 1024px)').matches) return
+        const ocioso = window.requestIdleCallback ?? ((f: () => void) => setTimeout(f, 200))
+        ocioso(() => setWebgl(true), { timeout: 1500 })
+      },
+      { rootMargin: '150% 0px' },
+    )
     io.observe(el)
     return () => io.disconnect()
   }, [])
@@ -63,10 +76,19 @@ export function Portfolio() {
         t.setAttribute('data-horizontal', '')
         gsap.set(secao, { height: '100svh' })
         const distancia = () => t.scrollWidth - window.innerWidth
+        // os cards entram pela direita enquanto a seção sobe (antes, a primeira janela já
+        // ficava parada embaixo da tela, um bloco claro chegando antes do escuro)
+        gsap.fromTo(
+          '[data-port-cartao]',
+          { x: () => window.innerWidth * 0.45, opacity: 0.25 },
+          { x: 0, opacity: 1, ease: 'none', stagger: 0.04, scrollTrigger: { trigger: secao, start: 'top bottom', end: 'top top', scrub: true, invalidateOnRefresh: true } },
+        )
+        // 1 px de rolagem = 1 px na horizontal, sem suavização extra (o Lenis já suaviza;
+        // somadas, a trilha seguia andando depois de a seção soltar)
         const corrida = gsap.to(t, {
           x: () => -distancia(),
           ease: 'none',
-          scrollTrigger: { trigger: secao, start: 'top top', end: () => `+=${distancia()}`, pin: true, scrub: 0.6, invalidateOnRefresh: true },
+          scrollTrigger: { trigger: secao, start: 'top top', end: () => `+=${distancia()}`, pin: true, scrub: true, invalidateOnRefresh: true, anticipatePin: 1 },
         })
         // o celular de cada projeto anda um pouco mais devagar que o card (profundidade)
         for (const cel of t.querySelectorAll('[data-port-celular]')) {
@@ -129,7 +151,7 @@ export function Portfolio() {
                   alt={`Página inicial do projeto-modelo ${p.nome} no computador`}
                   width={1440}
                   height={900}
-                  loading="lazy"
+                  loading={perto ? 'eager' : 'lazy'}
                   decoding="async"
                   className="block aspect-[16/10] w-full object-cover object-top"
                 />
@@ -140,7 +162,7 @@ export function Portfolio() {
                 alt={`Página inicial do projeto-modelo ${p.nome} no celular`}
                 width={390}
                 height={844}
-                loading="lazy"
+                loading={perto ? 'eager' : 'lazy'}
                 decoding="async"
                 className="absolute right-0 bottom-0 w-[24%] rounded-[1.1rem] shadow-[0_30px_60px_-20px_rgb(0_0_0/0.8)] ring-[5px] ring-tinta"
               />

@@ -115,7 +115,9 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
       lenis.on('scroll', ScrollTrigger.update)
       tick = (time: number) => lenis?.raf(time * 1000)
       gsap.ticker.add(tick)
-      gsap.ticker.lagSmoothing(0)
+      // atraso suavizado (padrão do GSAP): depois de um quadro longo o Lenis anda como se fosse um
+      // quadro normal, em vez de pular de uma vez para alcançar a rolagem ("teleporte")
+      gsap.ticker.lagSmoothing(500, 33)
     }
     return () => {
       document.removeEventListener('click', clique)
