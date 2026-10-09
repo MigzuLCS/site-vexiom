@@ -37,19 +37,19 @@ Regras:
 - **Azul substitui o preto, não soma**: uma seção escura é Azul *ou* Tinta.
 - **Azul some sobre preto** (contraste ~1,9): nunca coloque elemento azul em fundo Tinta.
 - Laranja normal sobre Papel tem contraste 2,7: só para formas e textos grandes. Texto pequeno laranja = `--laranja-escuro`.
-- Sem gradiente, sem sombra colorida.
+- Gradientes, brilhos e fundos animados (ex.: os do React Bits) só com cores da paleta e em efeito de fundo, nunca atrás de texto pequeno. Nada de roxo, neon ou arco-íris.
 
 ## Tipografia
 - **Red Hat Display** (Google Fonts): é a fonte do logotipo. Títulos em 600–700, texto em 400–500.
 - Um segundo par só se houver motivo forte; o padrão é uma família só.
 
 ## Linguagem de movimento (o que torna o site "Vexiom")
-As animações saem da logo, não de um catálogo genérico. Use estes gestos e evite o resto.
+O site é bem dinâmico e pode usar efeitos de biblioteca (GSAP, React Bits, 21st.dev). Os gestos abaixo saem da logo e são a **assinatura**: aparecem nos momentos-chave (abertura, transições, CTA) e dão unidade ao resto. Efeito de biblioteca entra recolorido e no ritmo da marca (`docs/componentes.md`).
 
 1. **Eixo diagonal 63,4°.** Revelações, cortinas e transições entre seções andam na diagonal da marca (máscaras `clip-path` com o mesmo ângulo), nunca de baixo para cima genérico.
 2. **Entrelaçado.** Elementos que se cruzam passam *por cima e por baixo* com o vão de 4 px, como as barras do símbolo. Ex.: na abertura, as barras do símbolo entram deslizando cada uma pelo próprio eixo e se encaixam; no fim, o nome aparece.
 3. **Cursor.** O quadrado laranja (pingo do i / bloco do símbolo) é um cursor: pisca (`steps`, ~1 s) enquanto um título "se digita", marca o item ativo de um menu, segue o foco. É o gesto-assinatura: "a gente constrói sites".
 4. **Padrão de diagonais** como textura viva: desloca devagar com a rolagem (parallax leve) atrás de seções escuras.
-5. **Ritmo:** 300–700 ms, `cubic-bezier(.2,.7,.1,1)`, escalonamento de 40–80 ms. Nada de bounce, elástico ou rotação gratuita.
+5. **Ritmo padrão:** 300–700 ms, curva `vexiom` = `cubic-bezier(.2,.7,.1,1)`, escalonamento de 40–80 ms. Sequências longas guiadas pela rolagem (scrub) podem durar o que a rolagem durar. Bounce, elástico e rotação só quando o efeito pedir, nunca como padrão.
 
-Proibido: partículas, parallax em toda imagem, cursor próprio sem fallback, animação que esconde conteúdo quando o JS falha.
+Proibido: cursor próprio sem fallback, animação que esconde conteúdo quando o efeito falha, efeito que trava a rolagem no celular.

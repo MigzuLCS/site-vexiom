@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+
+/* Marca Vexiom (docs/marca.md). Componentes de React Bits e 21st.dev usam estes tokens,
+   nunca as cores que vêm de fábrica. */
+@theme {
+  --color-tinta: #141414;
+  --color-papel: #f5f2ec;
+  --color-laranja: #f26b1d;
+  --color-laranja-escuro: #c2410c;
+  --color-azul: #1e3a5f;
+  --color-cinza: #6b6760;
+
+  --font-sans: 'Red Hat Display Variable', ui-sans-serif, system-ui, sans-serif;
+  --ease-vexiom: cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+
+/* Nomes que os componentes no padrão shadcn (21st.dev) esperam, apontando para a marca. */
+:root {
+  --background: var(--color-papel);
+  --foreground: var(--color-tinta);
+  --primary: var(--color-laranja);
+  --primary-foreground: var(--color-tinta);
+  --secondary: var(--color-azul);
+  --secondary-foreground: var(--color-papel);
+  --muted: #e9e4da;
+  --muted-foreground: var(--color-cinza);
+  --accent: var(--color-laranja);
+  --accent-foreground: var(--color-tinta);
+  --border: #dcd6cb;
+  --input: #dcd6cb;
+  --ring: var(--color-laranja);
+  --radius: 0.25rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+}
+
+@layer base {
+  html {
+    background: var(--color-papel);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-laranja);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

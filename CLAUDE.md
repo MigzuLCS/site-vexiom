@@ -1,38 +1,42 @@
 # Site da Vexiom
 
-Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria sites para negócios (do comércio local a sistemas sob medida). É a vitrine da empresa: **visual próprio, animado e interativo**, no nível **Experimental**. Precisa provar, só de abrir, que a Vexiom sabe fazer o que vende.
+Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria sites para negócios (do comércio local a sistemas sob medida). É a vitrine da empresa: **visual próprio, muito dinâmico e interativo**, no nível **Experimental**. Precisa provar, só de abrir, que a Vexiom sabe fazer o que vende.
 
-> Este site NÃO segue o processo "Contido" dos sites de clientes (Site Maker). Aqui movimento e interação são o produto, dentro das regras abaixo.
+> Este site NÃO segue o processo "Contido" dos sites de clientes (Site Maker). Aqui movimento e interação são o produto.
+
+## Stack
+- **Vite + React 19 + TypeScript + Tailwind v4.** Alias `@/` = `src/`.
+- **GSAP** (com ScrollTrigger, SplitText, CustomEase; todos os plugins são gratuitos) é o motor principal: timelines, rolagem, texto. Importe sempre de `@/lib/gsap` (registra plugins e a curva `vexiom`) e use `useGSAP` nos componentes.
+- **Lenis** para rolagem suave, já ligado ao relógio do GSAP em `src/components/SmoothScroll.tsx`. Não crie outra instância.
+- **motion** (`motion/react`): para animações de componente e porque muitos componentes do React Bits dependem dele. O site já está dentro de `<MotionConfig reducedMotion="user">`.
+- **React Bits** e **21st.dev**: fontes de componentes prontos, instalados pelo CLI do shadcn. Como trazer e adaptar: `docs/componentes.md`.
 
 ## Antes de qualquer tarefa
 1. Leia `docs/marca.md` inteiro (cores, fonte, logo e **linguagem de movimento**). Toda decisão visual sai dele.
-2. Para movimento: leia `docs/receitas/README.md` e abra só a receita que for usar. Para ideias: `docs/repertorio/INDEX.md`.
-3. As instruções de stack, estrutura e conteúdo vêm do usuário. Na dúvida entre opções equivalentes, prefira a mais simples e leve.
+2. Vai trazer componente pronto? Leia `docs/componentes.md`.
+3. Para movimento: `docs/receitas/README.md` (abra só a receita que for usar). Para ideias: `docs/repertorio/INDEX.md`.
+4. As instruções de estrutura e conteúdo vêm do usuário.
 
 ## Processo
-1. **Direção antes de código.** Escreva `docs/DIRECTION.md` (máx. 30 linhas): conceito, hero, seções e a forma de cada uma, quais gestos da linguagem de movimento entram em cada seção. **Mostre um resumo curto ao usuário e espere o ok** antes de implementar.
+1. **Direção antes de código.** Escreva `docs/DIRECTION.md` (máx. 30 linhas): conceito, hero, seções e a forma de cada uma, quais efeitos/componentes entram em cada seção. **Mostre um resumo curto ao usuário e espere o ok** antes de implementar.
 2. **Implemente em passos pequenos**, uma seção por vez, e rode o check a cada passo.
 3. **Autorrevisão:** `npm run check` sem nenhum `✗`. Olhe **uma** imagem por rodada (`.check/desktop-hero.png`, ou a mobile se mexeu no mobile). Prefira verificar por código a abrir prints.
 4. Commits pequenos e descritivos no branch atual. **Não faça push nem PR sem o usuário pedir.**
 
 ## Regras que não se negociam
-- **Reduzir movimento:** com `prefers-reduced-motion`, todo conteúdo aparece no estado final, sem animação. Sem JS, o site continua legível.
-- **Estado final = estado de repouso.** Anime `transform`, `opacity` e `clip-path`; nunca `width/height/top/margin`.
-- **Celular primeiro:** cada efeito tem uma versão simples no mobile (a receita diz qual). Nada de hover como única forma de acessar algo.
-- **Peso:** até **350 KB de JS (gzip)**; ideal < 250. LCP local < 2,5 s no celular. GSAP/WebGL/Lenis só se o gesto pedir, cada um com fallback.
-- **Acessibilidade:** um `h1`, alvos de toque ≥ 44 px, contraste da paleta (`docs/marca.md`), foco visível, cursor próprio nunca esconde o cursor do sistema sem fallback.
-- **Segurança:** tudo no build é público. Nenhum segredo, token ou cupom no código nem em `VITE_*`. Links `target="_blank"` com `rel="noopener noreferrer"`. Formulário que envia dados exige link para política de privacidade (LGPD).
-- **Conteúdo sem invenção:** números, clientes, depoimentos e preços só se o usuário fornecer. Projetos de demonstração aparecem como "projetos-modelo", nunca como clientes.
+- **Reduzir movimento:** com `prefers-reduced-motion`, todo conteúdo aparece no estado final, sem animação (o Lenis já se desliga sozinho). Efeitos decorativos (fundos WebGL, partículas) viram imagem parada ou somem.
+- **Conteúdo nunca depende da animação.** Texto e botões ficam visíveis se o efeito falhar, não carregar ou o WebGL não existir. Animação parte do estado de repouso (`gsap.from`, não esconder no CSS e revelar no JS).
+- **Celular primeiro:** cada efeito tem versão simples ou desligada no mobile (use `gsap.matchMedia()`). Nada de hover como única forma de acessar algo.
+- **Peso:** JS da **primeira carga até 400 KB gzip** (ideal < 250). Efeitos pesados (three.js, ogl, cenas WebGL) entram com `React.lazy`/`import()` só quando a seção chega perto da tela. LCP local < 2,5 s no celular.
+- **Desempenho:** prefira animar `transform`, `opacity`, `clip-path` e `filter`. Animar layout (`width/height/top/margin`) só com motivo e sem travar a rolagem. Limpe tudo ao desmontar (`useGSAP` faz isso; WebGL precisa de `dispose`).
+- **Acessibilidade:** um `h1`, alvos de toque ≥ 44 px, contraste da paleta (`docs/marca.md`), foco visível, cursor próprio nunca esconde o cursor do sistema sem fallback, texto dividido por SplitText continua legível por leitor de tela (`aria-label` no título original).
+- **Segurança:** tudo no build é público. Nenhum segredo, token ou cupom no código nem em `VITE_*`. Links `target="_blank"` com `rel="noopener noreferrer"`. Formulário que envia dados exige link para política de privacidade (LGPD). Componente copiado de fora é código de terceiro: leia antes de usar.
+- **Conteúdo sem invenção:** números, clientes, depoimentos e preços só se o usuário fornecer. Projetos de demonstração aparecem como "projetos-modelo", nunca como clientes. Componentes de demonstração vêm com texto falso: troque tudo.
 
 ## Check automático (`scripts/check.mjs`)
-Portado do Site Maker. Faz o build, abre o site em 390 px e 1440 px e com "reduzir movimento", e reprova: rolagem horizontal, erros de console, títulos cortados/sobrepostos por animação, conteúdo invisível com reduzir movimento, âncoras quebradas, menus/acordeões que não abrem, links de contato inválidos, alvos < 44 px, h1 duplicado, segredos no build, source map publicado, `http://`, JS acima de 350 KB.
+`npm run check`. Faz o build, abre o site em 390 px e 1440 px e com "reduzir movimento", e reprova: rolagem horizontal, erros de console, títulos cortados/sobrepostos por animação, conteúdo invisível com reduzir movimento, âncoras quebradas, menus/acordeões que não abrem, links de contato inválidos, alvos < 44 px, h1 duplicado, segredos no build, source map publicado, `http://`, JS da primeira carga acima de 400 KB (o sob demanda só avisa acima de 900 KB). Marque o botão principal com `data-cta`.
 
-Configuração (uma vez, quando o projeto Vite existir):
-```
-npm i -D vite puppeteer-core
-npx playwright install chromium-headless-shell   # navegador sem janela (evita janelas fantasmas no Alt-Tab)
-```
-e no `package.json`: `"check": "node scripts/check.mjs"`. Marque o botão principal com `data-cta`.
+Usa o Chromium headless do Playwright (`npx playwright install chromium-headless-shell`, já instalado nesta máquina).
 
 ## Pesquisa de referências (só quando o usuário pedir)
 `node scripts/inspect-site.mjs <url> [<url>...]` analisa sites por código (bibliotecas, fontes, cores, movimento) e salva capturas em `docs/repertorio/.capturas/` (fora do git). Estude técnicas; **não copie** código, imagens, textos ou layouts. Registre o aprendizado em `docs/repertorio/`.

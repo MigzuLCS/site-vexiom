@@ -64,8 +64,11 @@ const SECRET_WARN = [
 ]
 const ENV_SUSPECT = /VITE_\w*(SECRET|TOKEN|PASS|SENHA|PRIVATE|ADMIN|CUPOM|COUPON)\w*/g
 // Nível Experimental: animação é o produto, mas o celular ainda precisa abrir rápido.
+// O limite rígido vale para o JS da primeira carga (o que o index.html puxa).
+// Efeitos pesados (WebGL, cenas 3D) entram em chunks sob demanda e só geram aviso.
 const JS_GZ_WARN = 250 * 1024
-const JS_GZ_FAIL = 350 * 1024
+const JS_GZ_FAIL = 400 * 1024
+const JS_LAZY_WARN = 900 * 1024
 
 const files = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? files(join(dir, d.name)) : [join(dir, d.name)]))
 const root = (p) => join(projeto, p)
@@ -77,19 +80,26 @@ const warns = []
 await build({ root: projeto, logLevel: 'error' })
 
 // Segurança estática: build final + código-fonte do site
+const initialJs = new Set([...readFileSync(root(join(OUT_DIR, 'index.html')), 'utf8').matchAll(/(?:src|href)="\/?([^"]+\.js)"/g)].map((m) => m[1].split('/').pop()))
 let jsGz = 0
+let lazyGz = 0
 for (const f of files(root(OUT_DIR))) {
   const name = f.split(/[\\/]/).pop()
   if (f.endsWith('.map')) fails.push(`segurança: source map publicado (${name})`)
   if (!/\.(js|html|css|json|txt|svg)$/.test(f)) continue
   const src = readFileSync(f, 'utf8')
-  if (f.endsWith('.js')) jsGz += gzipSync(src).length
+  if (f.endsWith('.js')) {
+    if (initialJs.has(name)) jsGz += gzipSync(src).length
+    else lazyGz += gzipSync(src).length
+  }
   for (const [re, what] of SECRETS) if (re.test(src)) fails.push(`segurança: ${what} em ${name}`)
   for (const [re, what] of SECRET_WARN) if (re.test(src)) warns.push(`segurança: ${what} em ${name}`)
 }
 const kb = Math.round(jsGz / 1024)
-if (jsGz > JS_GZ_FAIL) fails.push(`performance: ${kb} KB de JS (gzip), limite ${JS_GZ_FAIL / 1024} KB`)
-else if (jsGz > JS_GZ_WARN) warns.push(`performance: ${kb} KB de JS (gzip), ideal < ${JS_GZ_WARN / 1024} KB`)
+const lazyKb = Math.round(lazyGz / 1024)
+if (jsGz > JS_GZ_FAIL) fails.push(`performance: ${kb} KB de JS na primeira carga (gzip), limite ${JS_GZ_FAIL / 1024} KB. Mova efeitos pesados para import() sob demanda`)
+else if (jsGz > JS_GZ_WARN) warns.push(`performance: ${kb} KB de JS na primeira carga (gzip), ideal < ${JS_GZ_WARN / 1024} KB`)
+if (lazyGz > JS_LAZY_WARN) warns.push(`performance: ${lazyKb} KB de JS sob demanda (gzip), acima de ${JS_LAZY_WARN / 1024} KB`)
 
 const siteSrc = [...(existsSync(root('src')) ? files(root('src')) : []), root('index.html')].filter((f) => /\.(jsx?|tsx?|html|vue|svelte)$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n')
 const envFiles = readdirSync(root('')).filter((f) => f.startsWith('.env')).map((f) => readFileSync(root(f), 'utf8')).join('\n')
@@ -377,7 +387,7 @@ if (fails.length) {
   for (const f of fails) console.log(`✗ ${f}`)
 } else {
   console.log('\nOK: sem overflow, sem erros, âncoras/menus funcionando, tudo visível com reduzir movimento, alvos ≥ 44px, h1 único, footer curto, sem jargão.')
-  console.log(`OK segurança: sem segredos no build, sem source maps, links seguros, ${kb} KB de JS (gzip).`)
+  console.log(`OK segurança: sem segredos no build, sem source maps, links seguros, ${kb} KB de JS na primeira carga + ${lazyKb} KB sob demanda (gzip).`)
 }
 console.log('Prints: .check/ (hero e página inteira, mobile e desktop)')
 process.exit(fails.length ? 1 : 0)
