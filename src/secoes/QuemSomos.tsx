@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState } from 'react'
 import { gsap, useGSAP, REDUZIR, MOVIMENTO } from '@/lib/gsap'
 import { TextoRevelado } from '@/components/TextoRevelado'

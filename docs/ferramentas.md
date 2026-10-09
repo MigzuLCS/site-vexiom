@@ -7,7 +7,7 @@ cada colaborador instala os seus.
 ## Obrigatório
 | O quê | Para quê | Como |
 |---|---|---|
-| Node 20+ e npm | build e dev | `npm install` |
+| Node 20.9+ e npm (mínimo do Next 16) | build e dev | `npm install`; `npm run dev` abre em `localhost:3000`; `npm run build` gera `out/`; `npm start` serve o `out/` |
 | Chromium headless do Playwright | `npm run check` (testa 390 px, 1440 px e reduzir movimento) | `npx playwright install chromium-headless-shell` |
 
 GSAP, Lenis, motion e o resto vêm pelo `npm install` (ver `package.json`). Não há skill de GSAP:

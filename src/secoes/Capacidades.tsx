@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef } from 'react'
 import { gsap, useGSAP, REDUZIR } from '@/lib/gsap'
 import { FaixaVelocidade } from '@/components/FaixaVelocidade'

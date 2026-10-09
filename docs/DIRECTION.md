@@ -18,4 +18,4 @@
 - GSAP + ScrollTrigger (cortinas, revelações, horizontal), SplitText no título, Lenis na rolagem.
 - Componentes prontos como base (adaptados à marca, `docs/componentes.md`): preços = 21st *Pricing Section with Frequency Toggle* (efferd, aprovado); título = React Bits *Text Type*; faixa = React Bits *Scroll Velocity*; warp do portfólio = React Bits *Grainient* (ou 21st *Warp · Kelp*); fundo do hero = React Bits *ShapeGrid* adaptado.
 - Celular: traços com menos densidade e sem rastro do dedo; portfólio sem WebGL. Reduzir movimento: símbolo montado e tudo parado.
-- HTML pré-renderizado no build (Google e prévia de link no WhatsApp).
+- Next com exportação estática: HTML pronto no build (Google e prévia de link no WhatsApp); o check reprova se o `<h1>` não estiver no HTML.

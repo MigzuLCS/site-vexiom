@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, useGSAP, REDUZIR, prefereReduzir } from '@/lib/gsap'
 import { travarRolagem, emNavegacao } from '@/components/SmoothScroll'
@@ -102,7 +104,7 @@ export function Menu() {
   // entrada: a trilha se abre a partir da direita (como o PillNav)
   useGSAP(() => {
     gsap.matchMedia().add(`not all and ${REDUZIR}`, () => {
-      gsap.from('[data-menu-entra]', { opacity: 0, y: -12, stagger: 0.08, duration: 0.6, delay: 0.1 })
+      gsap.from('[data-menu-entra]', { autoAlpha: 0, y: -12, stagger: 0.08, duration: 0.6, delay: 0.1 })
     })
   })
 
@@ -154,13 +156,14 @@ export function Menu() {
     <>
       <header ref={raiz} className="fixed inset-x-0 top-4 z-50 px-4 sm:px-8">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-          <a data-menu-entra href="#inicio" className="flex h-11 items-center" onClick={() => setAberto(false)}>
+          <a data-menu-entra data-primeiro-quadro href="#inicio" className="flex h-11 items-center" onClick={() => setAberto(false)}>
             <Logo rotulo="Vexiom, início" className={cn('h-7 w-auto transition-colors duration-300', inv ? 'text-papel' : 'text-tinta')} />
           </a>
 
           <nav aria-label="Principal" className="hidden lg:block">
             <ul
               data-menu-entra
+              data-primeiro-quadro
               ref={trilha}
               className={cn(
                 'flex h-[52px] items-stretch gap-0.5 rounded-full border p-1 backdrop-blur-sm transition-colors duration-300',

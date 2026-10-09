@@ -21,7 +21,7 @@ function Provisoria({ id, titulo, escuro }: { id: string; titulo: string; escuro
   )
 }
 
-export default function App() {
+export default function Pagina() {
   return (
     <>
       <Menu />

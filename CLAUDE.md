@@ -5,10 +5,14 @@ Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria si
 > Este site NÃO segue o processo "Contido" dos sites de clientes (Site Maker). Aqui movimento e interação são o produto.
 
 ## Stack
-- **Vite + React 19 + TypeScript + Tailwind v4.** Alias `@/` = `src/`.
+- **Next.js 16 (App Router) + React 19 + TypeScript + Tailwind v4.** Alias `@/` = `src/`. Exportação estática (`output: 'export'`): `npm run build` gera HTML pronto em `out/`, que hospeda em qualquer lugar. Quando precisar de servidor (formulário, área do cliente), tira o `export` em `next.config.ts`.
+  - Esta versão do Next mudou APIs e convenções: antes de usar algo do Next, leia o guia em `node_modules/next/dist/docs/`.
+  - Página em `src/app/page.tsx` (componente de servidor); seções e componentes com hooks, GSAP ou acesso ao navegador levam `'use client'` na primeira linha. Nada de `window`/`document` durante o render, só em efeitos (o HTML é gerado no build, sem navegador).
+  - **Primeira tela:** o que entra animado logo ao abrir leva `data-primeiro-quadro` e anima com `gsap.from(..., { autoAlpha: 0 })`; o CSS o esconde só quando há JS e movimento permitido (`global.css`), então não pisca nem some sem JS.
+  - Tipos: o `tsc` roda no `npm run build` (o TypeScript 7 não tem a API que o Next usaria).
 - **GSAP** (com ScrollTrigger, SplitText, CustomEase; todos os plugins são gratuitos) é o motor principal: timelines, rolagem, texto. Importe sempre de `@/lib/gsap` (registra plugins e a curva `vexiom`) e use `useGSAP` nos componentes.
 - **Lenis** para rolagem suave, já ligado ao relógio do GSAP em `src/components/SmoothScroll.tsx`. Não crie outra instância. Links `#secao` passam por `irParaSecao` (mira o começo real de seções presas e, em saltos longos, cobre a tela com a cortina diagonal e pula direto, sem atravessar animações de rolagem).
-- **motion** (`motion/react`): para animações de componente e porque muitos componentes do React Bits dependem dele. O site já está dentro de `<MotionConfig reducedMotion="user">`.
+- **motion** (`motion/react`): instalado porque muitos componentes do React Bits dependem dele. Hoje nenhum componente usa; o primeiro que usar deve entrar com `<MotionConfig reducedMotion="user">` em `src/components/Provedores.tsx`.
 - **React Bits** e **21st.dev**: fontes de componentes prontos, instalados pelo CLI do shadcn. Como trazer e adaptar: `docs/componentes.md`.
 
 ## Antes de qualquer tarefa
@@ -31,11 +35,11 @@ Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria si
 - **Peso:** JS da **primeira carga até 400 KB gzip** (ideal < 250). Efeitos pesados (three.js, ogl, cenas WebGL) entram com `React.lazy`/`import()` só quando a seção chega perto da tela. LCP local < 2,5 s no celular.
 - **Desempenho:** prefira animar `transform`, `opacity`, `clip-path` e `filter`. Animar layout (`width/height/top/margin`) só com motivo e sem travar a rolagem. Limpe tudo ao desmontar (`useGSAP` faz isso; WebGL precisa de `dispose`).
 - **Acessibilidade:** um `h1`, alvos de toque ≥ 44 px, contraste da paleta (`docs/marca.md`), foco visível, cursor próprio nunca esconde o cursor do sistema sem fallback, texto dividido por SplitText continua legível por leitor de tela (`aria-label` no título original).
-- **Segurança:** tudo no build é público. Nenhum segredo, token ou cupom no código nem em `VITE_*`. Links `target="_blank"` com `rel="noopener noreferrer"`. Formulário que envia dados exige link para política de privacidade (LGPD). Componente copiado de fora é código de terceiro: leia antes de usar.
+- **Segurança:** tudo no build é público. Nenhum segredo, token ou cupom no código nem em `NEXT_PUBLIC_*`. Links `target="_blank"` com `rel="noopener noreferrer"`. Formulário que envia dados exige link para política de privacidade (LGPD). Componente copiado de fora é código de terceiro: leia antes de usar.
 - **Conteúdo sem invenção:** números, clientes, depoimentos e preços só se o usuário fornecer. Projetos de demonstração aparecem como "projetos-modelo", nunca como clientes. Componentes de demonstração vêm com texto falso: troque tudo.
 
 ## Check automático (`scripts/check.mjs`)
-`npm run check`. Faz o build, abre o site em 390 px e 1440 px e com "reduzir movimento", e reprova: rolagem horizontal, erros de console, títulos cortados/sobrepostos por animação, conteúdo invisível com reduzir movimento, âncoras quebradas, menus/acordeões que não abrem, links de contato inválidos, alvos < 44 px, h1 duplicado, segredos no build, source map publicado, `http://`, JS da primeira carga acima de 400 KB (o sob demanda só avisa acima de 900 KB). Marque o botão principal com `data-cta`.
+`npm run check`. Faz o build, abre o site em 390 px e 1440 px e com "reduzir movimento", e reprova: rolagem horizontal, erros de console, títulos cortados/sobrepostos por animação, conteúdo invisível com reduzir movimento, âncoras quebradas, menus/acordeões que não abrem, links de contato inválidos, alvos < 44 px, h1 duplicado, `<h1>` ausente do HTML gerado, segredos no build, source map publicado, `http://`, JS da primeira carga acima de 400 KB (o sob demanda só avisa acima de 900 KB). Marque o botão principal com `data-cta`.
 
 Usa o Chromium headless do Playwright (`npx playwright install chromium-headless-shell`, já instalado nesta máquina).
 

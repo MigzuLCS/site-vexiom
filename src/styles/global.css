@@ -79,3 +79,16 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
+
+/* Entradas do primeiro quadro. O HTML chega pronto do build, então o que entra animado
+   na primeira tela ficaria visível e piscaria ao o JS esconder para animar. Com JS
+   (classe .js, posta no <head> antes de pintar) e sem "reduzir movimento", esses
+   elementos começam invisíveis e a animação os revela (gsap autoAlpha). Sem JS, com
+   erro ou com "reduzir movimento", aparecem normalmente (o layout tira a .js em 4 s se
+   o app não montar). Só para a primeira tela: o resto já usa gsap.from com rolagem. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-primeiro-quadro],
+  .js [data-digitado]:not([data-digitando]) [data-digitado-visual] {
+    visibility: hidden;
+  }
+}

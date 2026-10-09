@@ -2,16 +2,17 @@
 // Faz build, verifica segurança e peso do JS, abre o site em 390px e 1440px (com barra de rolagem real),
 // testa a interação (âncoras, menus, acordeões, links de contato) e repete em 390px com "reduzir movimento".
 // Imprime um relatório curto em texto. Prints ficam em .check/ (olhe só se algo falhar).
-import { build, preview } from 'vite'
+import { execSync } from 'node:child_process'
+import { servir } from './servir.mjs'
 import puppeteer from 'puppeteer-core'
 import { existsSync, mkdirSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
 
 const projeto = process.cwd()
-const OUT_DIR = process.env.CHECK_OUTDIR || 'dist'
-if (!existsSync(join(projeto, 'index.html'))) {
-  console.error('Rode na raiz do projeto Vite (onde fica o index.html): npm run check')
+const OUT_DIR = process.env.CHECK_OUTDIR || 'out'
+if (!existsSync(join(projeto, 'next.config.ts'))) {
+  console.error('Rode na raiz do projeto Next (onde fica o next.config.ts): npm run check')
   process.exit(1)
 }
 
@@ -48,7 +49,7 @@ if (!browserPath.includes('headless-shell')) console.log('! sem o headless shell
 const BANNED = ['soluções inovadoras', 'excelência', 'experiência única', 'transformamos', 'referência em', 'compromisso com você', 'venha nos conhecer', 'o melhor do']
 const LCP_WARN_MS = 2500
 
-// Segurança: tudo que vai para dist/ é público. Nada de segredo, source map ou bundle gigante.
+// Segurança: tudo que vai para out/ é público. Nada de segredo, source map ou bundle gigante.
 const SECRETS = [
   [/sk_(live|test)_[0-9a-zA-Z]{16,}/, 'chave secreta Stripe'],
   [/APP_USR-\d{10,}-\d{6}-[0-9a-f]{32}-\d+/, 'access token Mercado Pago'],
@@ -62,7 +63,7 @@ const SECRET_WARN = [
   [/AIza[0-9A-Za-z_-]{35}/, 'chave Google (ok só se restrita por domínio)'],
   [/eyJ[0-9A-Za-z_-]{10,}\.eyJ[0-9A-Za-z_-]{10,}\./, 'JWT embutido'],
 ]
-const ENV_SUSPECT = /VITE_\w*(SECRET|TOKEN|PASS|SENHA|PRIVATE|ADMIN|CUPOM|COUPON)\w*/g
+const ENV_SUSPECT = /(?:NEXT_PUBLIC|VITE)_\w*(SECRET|TOKEN|PASS|SENHA|PRIVATE|ADMIN|CUPOM|COUPON)\w*/g
 // Nível Experimental: animação é o produto, mas o celular ainda precisa abrir rápido.
 // O limite rígido vale para o JS da primeira carga (o que o index.html puxa).
 // Efeitos pesados (WebGL, cenas 3D) entram em chunks sob demanda e só geram aviso.
@@ -77,10 +78,22 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 const fails = []
 const warns = []
 
-await build({ root: projeto, logLevel: 'error' })
+try {
+  execSync('npm run build', { cwd: projeto, stdio: 'pipe' })
+} catch (e) {
+  console.error(`✗ build falhou:
+${e.stdout}${e.stderr}`)
+  process.exit(1)
+}
+
+// HTML pré-renderizado: buscadores e prévias de link (WhatsApp) leem o HTML sem rodar JS.
+const html = readFileSync(root(join(OUT_DIR, 'index.html')), 'utf8')
+if (!/<h1[\s>]/.test(html)) fails.push('HTML: o <h1> não está no HTML gerado (página depende de JS para ter conteúdo)')
+const titulosNoHtml = [...html.matchAll(/<h2[\s>]/g)].length
+if (titulosNoHtml === 0) fails.push('HTML: nenhum <h2> no HTML gerado')
 
 // Segurança estática: build final + código-fonte do site
-const initialJs = new Set([...readFileSync(root(join(OUT_DIR, 'index.html')), 'utf8').matchAll(/(?:src|href)="\/?([^"]+\.js)"/g)].map((m) => m[1].split('/').pop()))
+const initialJs = new Set([...html.matchAll(/(?:src|href)="\/?([^"]+\.js)"/g)].map((m) => m[1].split('/').pop()))
 let jsGz = 0
 let lazyGz = 0
 for (const f of files(root(OUT_DIR))) {
@@ -101,15 +114,15 @@ if (jsGz > JS_GZ_FAIL) fails.push(`performance: ${kb} KB de JS na primeira carga
 else if (jsGz > JS_GZ_WARN) warns.push(`performance: ${kb} KB de JS na primeira carga (gzip), ideal < ${JS_GZ_WARN / 1024} KB`)
 if (lazyGz > JS_LAZY_WARN) warns.push(`performance: ${lazyKb} KB de JS sob demanda (gzip), acima de ${JS_LAZY_WARN / 1024} KB`)
 
-const siteSrc = [...(existsSync(root('src')) ? files(root('src')) : []), root('index.html')].filter((f) => /\.(jsx?|tsx?|html|vue|svelte)$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n')
+const siteSrc = [...(existsSync(root('src')) ? files(root('src')) : [])].filter((f) => /\.(jsx?|tsx?|html|vue|svelte)$/.test(f)).map((f) => readFileSync(f, 'utf8')).join('\n')
 const envFiles = readdirSync(root('')).filter((f) => f.startsWith('.env')).map((f) => readFileSync(root(f), 'utf8')).join('\n')
 const suspectEnv = [...new Set([...siteSrc.matchAll(ENV_SUSPECT), ...envFiles.matchAll(ENV_SUSPECT)].map((m) => m[0]))]
 if (suspectEnv.length) fails.push(`segurança: variável VITE_ é pública, não guarde segredo nela: ${suspectEnv.join(', ')}`)
-if (siteSrc.includes('dangerouslySetInnerHTML')) warns.push('segurança: dangerouslySetInnerHTML no site (só com conteúdo fixo, nunca de usuário)')
+if (siteSrc.replace(/<script dangerouslySetInnerHTML=\{\{ __html: marcarJs \}\} \/>/, '').includes('dangerouslySetInnerHTML')) warns.push('segurança: dangerouslySetInnerHTML no site (só com conteúdo fixo, nunca de usuário)')
 const sendsData = /fetch\(|axios|XMLHttpRequest|action=/.test(siteSrc)
 
-const server = await preview({ root: projeto, logLevel: 'silent', preview: { port: 0, open: false } })
-const url = server.resolvedUrls.local[0]
+const server = await servir(root(OUT_DIR))
+const url = server.url
 
 const outDir = root('.check/')
 mkdirSync(outDir, { recursive: true })
@@ -381,7 +394,7 @@ try {
   await page.close()
 } finally {
   await browser.close()
-  server.httpServer.close()
+  server.fechar()
 }
 
 for (const w of warns) console.log(`! ${w}`)
