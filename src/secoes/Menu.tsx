@@ -30,30 +30,37 @@ export function Menu() {
   const [escuro, setEscuro] = useState(false)
   const [aberto, setAberto] = useState(false)
 
-  // seção ativa, tema e esconder/mostrar ao rolar
+  // seção ativa, tema e esconder/mostrar ao rolar.
+  // Ativa e tema saem da posição real das seções na tela a cada rolagem, e não de gatilhos
+  // calculados uma vez: as áreas fixas (pin) das seções abaixo mudam a altura da página
+  // depois que o menu monta, e gatilhos fixos ficavam milhares de px fora do lugar.
   useGSAP(() => {
-    for (const s of SECOES) {
-      const el = document.getElementById(s.id)
-      if (!el) continue
-      ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: (st) => st.isActive && setAtiva(s.id) })
+    const sincronizar = () => {
+      const linha = window.innerHeight * 0.45
+      const sob = (el: Element, y: number) => {
+        const r = el.getBoundingClientRect()
+        return r.top <= y && r.bottom > y
+      }
+      const s = SECOES.find(({ id }) => {
+        const el = document.getElementById(id)
+        return el && sob(el, linha)
+      })
+      setAtiva(s?.id ?? null)
+      setEscuro([...document.querySelectorAll('[data-escuro]')].some((el) => sob(el, 40)))
     }
-    ScrollTrigger.create({
-      trigger: document.getElementById('quem-somos') ?? document.body,
-      start: 'top 45%',
-      onLeaveBack: () => setAtiva(null),
-    })
-    for (const el of document.querySelectorAll<HTMLElement>('[data-escuro]')) {
-      ScrollTrigger.create({ trigger: el, start: 'top 40px', end: 'bottom 40px', onToggle: (st) => setEscuro(st.isActive) })
-    }
+    sincronizar()
+    ScrollTrigger.addEventListener('refresh', sincronizar)
     ScrollTrigger.create({
       start: 0,
       end: 'max',
       onUpdate: (st) => {
+        sincronizar()
         if (prefereReduzir()) return
         const esconder = st.direction === 1 && st.scroll() > 400
         gsap.to(raiz.current, { yPercent: esconder ? -160 : 0, duration: 0.4, overwrite: 'auto' })
       },
     })
+    return () => ScrollTrigger.removeEventListener('refresh', sincronizar)
   })
 
   // geometria do círculo de cada pílula (mesma conta do PillNav) e a timeline de hover
