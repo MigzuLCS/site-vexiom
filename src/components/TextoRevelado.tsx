@@ -1,5 +1,5 @@
 import { useMemo, useRef, type ElementType } from 'react'
-import { gsap, useGSAP, ScrollTrigger, MOVIMENTO } from '@/lib/gsap'
+import { gsap, useGSAP, MOVIMENTO } from '@/lib/gsap'
 import { cn } from '@/lib/utils'
 
 // Adaptado de React Bits "ScrollReveal": as palavras saem do desfoque e ganham opacidade
@@ -33,9 +33,9 @@ export function TextoRevelado({ texto, as: Tag = 'h2', className }: Props) {
         if (!el) return
         const ps = el.querySelectorAll('[data-palavra]')
         // termina quando a base do texto chega ao meio da tela, ou no fim da página se ela
-        // acabar antes (texto na última seção ficava preso no meio do efeito)
-        const fim = () => Math.min(el.getBoundingClientRect().bottom + window.scrollY - window.innerHeight / 2, ScrollTrigger.maxScroll(window) - 2)
-        const gatilho = { trigger: el, start: 'top bottom-=15%', end: fim, scrub: true, invalidateOnRefresh: true }
+        // acabar antes (clamp do ScrollTrigger; calcular à mão errava com as seções presas
+        // acima e as palavras se revelavam fora de ordem)
+        const gatilho = { trigger: el, start: 'top bottom-=15%', end: 'clamp(bottom center)', scrub: true }
         gsap.fromTo(el, { rotate: 1.5, transformOrigin: '0% 50%' }, { rotate: 0, ease: 'none', scrollTrigger: { ...gatilho, start: 'top bottom' } })
         gsap.fromTo(ps, de, { ...para, scrollTrigger: gatilho })
       })
