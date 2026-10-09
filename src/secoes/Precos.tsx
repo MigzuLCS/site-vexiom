@@ -9,6 +9,12 @@ import { PLANOS, VAGAS_FUNDADOR, linkWhatsapp } from '@/conteudo'
 import { cn } from '@/lib/utils'
 
 type Tabela = 'fundador' | 'tabela'
+
+// Listras do padrão azul da marca (vexiom-padrao-azul.svg) refeitas em CSS: o SVG é uma arte
+// 1080×1080, não um ladrilho, e repetido deixava as listras quebradas nas emendas. Aqui o
+// padrão é contínuo: mesmas cores, ângulo da marca (1 para o lado a cada 2 na vertical =
+// 63,43°) e a proporção do SVG em meia escala (listra de 13,5 px a cada 50 px na horizontal).
+const LISTRAS = 'repeating-linear-gradient(63.43deg, #1e3a5f 0 31.2px, #24456f 31.2px 44.7px)'
 const REAIS = { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 } as const
 
 // Valor em reais. O HTML do build leva o número como texto (Google, prévia de link, sem JS);
@@ -50,7 +56,8 @@ export function Precos() {
       <div
         data-precos-listras
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[url('/brand/vexiom-padrao-azul.svg')] bg-[length:540px_540px] bg-repeat opacity-70"
+        className="absolute inset-0 -z-10 opacity-70"
+        style={{ backgroundImage: LISTRAS }}
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_50%_30%,transparent_20%,rgb(30_58_95/0.85)_75%)]" />
 
