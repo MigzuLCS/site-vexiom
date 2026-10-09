@@ -6,7 +6,8 @@ import { prefereReduzir } from '@/lib/gsap';
 
 // React Bits "Grainient" (gradiente com distorção e grão, WebGL2 via ogl).
 // Mudanças: sem WebGL2 não faz nada (o fundo CSS de quem usa fica no lugar, sem erro de
-// shader no console); com "reduzir movimento" deriva a ¼ da velocidade; o contexto WebGL
+// shader no console); com "reduzir movimento" deriva a ¼ da velocidade; o relógio pausa fora
+// da tela em vez de pular quando ela volta; o contexto WebGL
 // é liberado ao desmontar. Carregado sob demanda (ogl fica fora da primeira carga).
 
 interface GrainientProps {
@@ -253,10 +254,15 @@ const Grainient: React.FC<GrainientProps> = ({
     let raf = 0;
     let isVisible = true;
     let isPageVisible = !document.hidden;
-    const t0 = performance.now();
+    // o relógio só anda nos quadros desenhados: pausado fora da tela, continua de onde parou
+    // (no original contava desde a montagem, e o gradiente pulava ao voltar à tela)
+    let tempo = 0;
+    let antes = 0;
 
     const loop = (t: number) => {
-      (program.uniforms.iTime as { value: number }).value = (t - t0) * 0.001 * ritmo;
+      tempo += Math.min((t - (antes || t)) / 1000, 0.05) * ritmo;
+      antes = t;
+      (program.uniforms.iTime as { value: number }).value = tempo;
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
@@ -265,6 +271,7 @@ const Grainient: React.FC<GrainientProps> = ({
       if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
+      antes = 0;
       if (raf !== 0) { cancelAnimationFrame(raf); raf = 0; }
     };
 
