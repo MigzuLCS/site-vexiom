@@ -35,5 +35,12 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 ## Pesquisa no 21st.dev
 As skills do 21st (`npx @21st-dev/cli install-skill`) e o CLI `21st` estão instalados para o usuário. Login uma vez com `npx @21st-dev/cli login` (abre o navegador; nada de chave na conversa).
 - **Busca é gratuita:** `npx @21st-dev/cli search "<termo>" --type c --limit 10`. Fluxo: o Claude pesquisa e devolve uma lista curta de links; o usuário escolhe; o Claude instala.
-- **Baixar código pelo CLI** (`21st get` / `21st install`) usa uma cota diária gratuita. Prefira instalar pela URL do registro com o shadcn (acima).
+- **Baixar código conta na cota diária** (plano gratuito: 2 por dia, renova 00:00 UTC = 21h de Brasília; `npx @21st-dev/cli usage`), seja por `21st get`, `21st add` ou pela URL do registro (`https://21st.dev/r/...` exige `api_key`). **Cada tentativa conta, mesmo se a instalação falhar depois.** Instale só o que o usuário escolheu.
+- **Como instalar sem desperdiçar cota** (`21st add` não funciona no Windows: "spawn npx ENOENT"):
+  1. Baixe o JSON **uma vez** para um arquivo, com o token do login (`~/.config/21st/auth.json`, campo `token`) em `API_KEY_21ST`, sem imprimir o token:
+     `curl -s "https://21st.dev/r/<autor>/<slug>?api_key=$API_KEY_21ST" -o .check/<slug>.json`
+  2. Confira se veio o componente (e não `retrieval_limit_reached`) e veja `registryDependencies`. Instale antes as que forem do shadcn oficial (`npx shadcn@latest add button`, gratuito) e retire-as do JSON: o CLI não resolve nomes como `shadcn/button`.
+  3. `npx shadcn@latest add ./.check/<slug>.json --yes`
+- O CLI do shadcn às vezes escreve `import { cn } from "cn"` e instala o pacote `cn` do npm (nada a ver com o projeto). Corrija para `@/lib/utils` e desinstale `cn`.
+- **React Bits não tem cota**: quando houver equivalente lá, prefira.
 - Não usar a geração por IA do 21st (`21st-ai`) sem o usuário pedir: gasta créditos.
