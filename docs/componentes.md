@@ -38,6 +38,8 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 | Montagem (Quem somos) | ideia de 21st Sticky Content Wrapper / Scroll 01 / Safari mockup (sem código copiado) | Quem somos | — | janela fixa no desktop, rolagem monta o site em 3 passos |
 | Magnetico | React Bits Magnet | botão do hero | — | GSAP quickTo, só mouse, desligado com reduzir movimento |
 | Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
+| FaixaVelocidade | React Bits ScrollVelocity | fim de Capacidades | — | relógio do GSAP no lugar do motion, componente interno fora do render, pausa fora da tela, cópias com aria-hidden, separador = bloco laranja, reduzir movimento = ¼ da velocidade |
+| Lista de capacidades | ideia de 21st Super Hover List (sem código copiado) | Capacidades | — | faixa Tinta diagonal no hover só em CSS; conteúdo todo visível sem hover |
 
 ## Pesquisa no 21st.dev
 As skills do 21st (`npx @21st-dev/cli install-skill`) e o CLI `21st` estão instalados para o usuário. Login uma vez com `npx @21st-dev/cli login` (abre o navegador; nada de chave na conversa).

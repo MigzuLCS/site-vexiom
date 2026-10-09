@@ -1,6 +1,7 @@
 import { Menu } from '@/secoes/Menu'
 import { Hero } from '@/secoes/Hero'
 import { QuemSomos } from '@/secoes/QuemSomos'
+import { Capacidades } from '@/secoes/Capacidades'
 import { cn } from '@/lib/utils'
 
 // Seções entram uma a uma (docs/DIRECTION.md). As provisórias só existem para o menu
@@ -27,7 +28,7 @@ export default function App() {
       <main>
         <Hero />
         <QuemSomos />
-        <Provisoria id="capacidades" titulo="Capacidades" />
+        <Capacidades />
         <Provisoria id="portfolio" titulo="Portfólio" escuro />
         <Provisoria id="precos" titulo="Preços" />
         <Provisoria id="contato" titulo="Contato" escuro />
