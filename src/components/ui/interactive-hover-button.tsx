@@ -6,11 +6,11 @@ import { cn } from '@/lib/utils'
 // Mudanças: é um link (<a>), não <button>; largura pelo texto (o original fixava w-32);
 // o ponto que cresce é o bloco laranja da logo (retângulo 1:2), que pisca como cursor
 // enquanto espera; ao crescer vira o fundo laranja e o texto entra com a seta.
-// Tamanhos: "md" (menu) e "lg" (hero, contato). Tom "claro" ou "escuro" conforme o fundo.
+// Tamanhos: "md" e "lg". Tom "claro"/"escuro" conforme o fundo; "solido" (Tinta) para a ação principal.
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
   texto: string
   tamanho?: 'md' | 'lg'
-  tom?: 'claro' | 'escuro'
+  tom?: 'claro' | 'escuro' | 'solido'
 }
 
 export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
@@ -20,7 +20,9 @@ export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
       className={cn(
         'group relative isolate inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-full border font-semibold whitespace-nowrap',
         tamanho === 'md' ? 'h-11 pr-5 pl-9 text-sm' : 'h-14 pr-8 pl-12 text-base',
-        tom === 'claro' ? 'border-tinta/15 bg-papel/70 text-tinta' : 'border-papel/25 bg-papel/10 text-papel',
+        tom === 'claro' && 'border-tinta/15 bg-papel/70 text-tinta',
+        tom === 'escuro' && 'border-papel/25 bg-papel/10 text-papel',
+        tom === 'solido' && 'border-tinta bg-tinta text-papel',
         className,
       )}
       {...props}

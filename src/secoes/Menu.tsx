@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, useGSAP, REDUZIR, prefereReduzir } from '@/lib/gsap'
 import { travarRolagem } from '@/components/SmoothScroll'
-import GlassSurface from '@/components/reactbits/GlassSurface'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { linkWhatsapp } from '@/conteudo'
 import { cn } from '@/lib/utils'
@@ -15,17 +14,18 @@ export const SECOES = [
   { id: 'contato', nome: 'Contato' },
 ]
 
-// Menu em pílula de vidro flutuante (estilo Liquid Glass): React Bits "GlassSurface".
-// Um destaque em pílula desliza entre os itens (ideia do React Bits "PillNav"): segue o
-// mouse e volta para a seção ativa, marcada também pelo bloco laranja da logo.
-// Sobre seções escuras (data-escuro) o vidro escurece. Some ao rolar para baixo e volta
-// ao rolar para cima. No celular, abre em tela cheia com uma cortina na diagonal da marca.
+// Logo solta à esquerda; à direita, o menu em pílulas adaptado de React Bits "PillNav":
+// trilha Tinta com pílulas Papel; no hover um círculo sobe de baixo e preenche a pílula
+// enquanto o texto troca deslizando. O item ativo ganha o bloco laranja da logo embaixo
+// (no original era uma bolinha). Sobre seções escuras (data-escuro) as cores se invertem.
+// Tudo some ao rolar para baixo e volta ao rolar para cima. No celular, menu de tela
+// cheia com cortina na diagonal da marca.
 export function Menu() {
   const raiz = useRef<HTMLElement>(null)
-  const lista = useRef<HTMLDivElement>(null)
-  const pilula = useRef<HTMLSpanElement>(null)
+  const trilha = useRef<HTMLUListElement>(null)
   const painel = useRef<HTMLDivElement>(null)
   const botao = useRef<HTMLButtonElement>(null)
+  const hovers = useRef<(gsap.core.Timeline | null)[]>([])
   const [ativa, setAtiva] = useState<string | null>(null)
   const [escuro, setEscuro] = useState(false)
   const [aberto, setAberto] = useState(false)
@@ -51,25 +51,53 @@ export function Menu() {
       onUpdate: (st) => {
         if (prefereReduzir()) return
         const esconder = st.direction === 1 && st.scroll() > 400
-        gsap.to(raiz.current, { yPercent: esconder ? -140 : 0, duration: 0.4, overwrite: 'auto' })
+        gsap.to(raiz.current, { yPercent: esconder ? -160 : 0, duration: 0.4, overwrite: 'auto' })
       },
     })
   })
 
-  // pílula de destaque: vai até um item (hover) ou volta para a seção ativa
-  const moverPilula = (id: string | null) => {
-    const p = pilula.current
-    const link = id ? lista.current?.querySelector<HTMLElement>(`[data-item="${id}"]`) : null
-    if (!p) return
-    if (!link) {
-      gsap.to(p, { opacity: 0, duration: 0.25 })
-      return
+  // geometria do círculo de cada pílula (mesma conta do PillNav) e a timeline de hover
+  useEffect(() => {
+    const montar = () => {
+      trilha.current?.querySelectorAll<HTMLElement>('[data-pilula]').forEach((pilula, i) => {
+        const circulo = pilula.querySelector<HTMLElement>('[data-circulo]')
+        const rotulo = pilula.querySelector<HTMLElement>('[data-rotulo]')
+        const rotuloHover = pilula.querySelector<HTMLElement>('[data-rotulo-hover]')
+        if (!circulo) return
+        const { width: w, height: h } = pilula.getBoundingClientRect()
+        const R = ((w * w) / 4 + h * h) / (2 * h)
+        const D = Math.ceil(2 * R) + 2
+        const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1
+        Object.assign(circulo.style, { width: `${D}px`, height: `${D}px`, bottom: `-${delta}px` })
+        gsap.set(circulo, { xPercent: -50, scale: 0, transformOrigin: `50% ${D - delta}px` })
+        gsap.set(rotulo, { y: 0 })
+        gsap.set(rotuloHover, { y: h + 12, opacity: 0 })
+        hovers.current[i]?.kill()
+        hovers.current[i] = gsap
+          .timeline({ paused: true, defaults: { duration: 2, ease: 'power3.out' } })
+          .to(circulo, { scale: 1.2, xPercent: -50 }, 0)
+          .to(rotulo, { y: -(h + 8) }, 0)
+          .to(rotuloHover, { y: 0, opacity: 1 }, 0)
+      })
     }
-    const alvo = { x: link.offsetLeft, width: link.offsetWidth }
-    if (gsap.getProperty(p, 'opacity') === 0) gsap.set(p, alvo)
-    gsap.to(p, { ...alvo, opacity: 1, duration: prefereReduzir() ? 0 : 0.45, ease: 'vexiom' })
+    montar()
+    document.fonts?.ready.then(montar).catch(() => {})
+    window.addEventListener('resize', montar)
+    return () => window.removeEventListener('resize', montar)
+  }, [])
+
+  const entrar = (i: number) => {
+    const tl = hovers.current[i]
+    tl?.tweenTo(tl.duration(), { duration: 0.3, ease: 'power3.out', overwrite: 'auto' })
   }
-  useEffect(() => moverPilula(ativa), [ativa])
+  const sair = (i: number) => hovers.current[i]?.tweenTo(0, { duration: 0.2, ease: 'power3.out', overwrite: 'auto' })
+
+  // entrada: a trilha se abre a partir da direita (como o PillNav)
+  useGSAP(() => {
+    gsap.matchMedia().add(`not all and ${REDUZIR}`, () => {
+      gsap.from('[data-menu-entra]', { opacity: 0, y: -12, stagger: 0.08, duration: 0.6, delay: 0.1 })
+    })
+  })
 
   // menu do celular: cortina diagonal
   const cortina = useRef<gsap.core.Timeline | null>(null)
@@ -114,52 +142,56 @@ export function Menu() {
     return () => document.removeEventListener('keydown', esc)
   }, [aberto])
 
-  const tom = escuro || aberto ? 'escuro' : 'claro'
-
+  const inv = escuro || aberto // cores invertidas
   return (
     <>
-    <header ref={raiz} className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4">
-      <GlassSurface
-        width="100%"
-        height={60}
-        borderRadius={30}
-        escuro={tom === 'escuro'}
-        backgroundOpacity={tom === 'escuro' ? 0.35 : 0.45}
-        brightness={tom === 'escuro' ? 40 : 60}
-        saturation={1.4}
-        className="relative z-10 mx-auto max-w-5xl transition-colors duration-300"
-      >
-        <nav aria-label="Principal" className="flex w-full items-center justify-between gap-4 pr-2 pl-5">
-          <a href="#inicio" className="flex h-11 items-center" onClick={() => setAberto(false)}>
-            <Logo rotulo="Vexiom, início" className={cn('h-6 w-auto transition-colors duration-300', tom === 'escuro' ? 'text-papel' : 'text-tinta')} />
+      <header ref={raiz} className="fixed inset-x-0 top-4 z-50 px-4 sm:px-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
+          <a data-menu-entra href="#inicio" className="flex h-11 items-center" onClick={() => setAberto(false)}>
+            <Logo rotulo="Vexiom, início" className={cn('h-7 w-auto transition-colors duration-300', inv ? 'text-papel' : 'text-tinta')} />
           </a>
 
-          <div ref={lista} className="relative hidden items-center md:flex" onPointerLeave={() => moverPilula(ativa)}>
-            <span
-              ref={pilula}
-              aria-hidden="true"
-              className={cn('pointer-events-none absolute top-1/2 left-0 h-9 -translate-y-1/2 rounded-full opacity-0', tom === 'escuro' ? 'bg-papel/12' : 'bg-tinta/7')}
-            />
-            {SECOES.map((s) => (
-              <a
-                key={s.id}
-                data-item={s.id}
-                href={`#${s.id}`}
-                onPointerEnter={() => moverPilula(s.id)}
-                aria-current={ativa === s.id ? 'true' : undefined}
-                className={cn(
-                  'relative flex h-11 items-center gap-2 rounded-full px-4 text-[13px] font-medium transition-colors duration-300',
-                  tom === 'escuro' ? 'text-papel/75 hover:text-papel' : 'text-tinta/70 hover:text-tinta',
-                  ativa === s.id && (tom === 'escuro' ? 'text-papel' : 'text-tinta'),
-                )}
-              >
-                <span aria-hidden="true" className={cn('h-2.5 w-[5px] bg-laranja transition-[opacity,transform] duration-300', ativa === s.id ? 'opacity-100' : 'w-0 opacity-0')} />
-                {s.nome}
-              </a>
-            ))}
-          </div>
-
-          <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tom={tom} className="hidden md:inline-flex" />
+          <nav aria-label="Principal" className="hidden items-center gap-3 md:flex">
+            <ul
+              data-menu-entra
+              ref={trilha}
+              className={cn('flex h-12 items-stretch gap-[3px] rounded-full p-[3px] transition-colors duration-300', inv ? 'bg-papel' : 'bg-tinta')}
+            >
+              {SECOES.map((s, i) => (
+                <li key={s.id} className="flex">
+                  <a
+                    data-pilula
+                    href={`#${s.id}`}
+                    aria-current={ativa === s.id ? 'true' : undefined}
+                    onMouseEnter={() => entrar(i)}
+                    onMouseLeave={() => sair(i)}
+                    onFocus={() => entrar(i)}
+                    onBlur={() => sair(i)}
+                    className={cn(
+                      'relative inline-flex items-center overflow-hidden rounded-full px-[18px] text-sm leading-none font-semibold whitespace-nowrap transition-colors duration-300',
+                      inv ? 'bg-tinta text-papel' : 'bg-papel text-tinta',
+                    )}
+                  >
+                    <span data-circulo aria-hidden="true" className={cn('pointer-events-none absolute bottom-0 left-1/2 z-[1] block rounded-full', inv ? 'bg-papel' : 'bg-tinta')} />
+                    <span className="relative z-[2] inline-block">
+                      <span data-rotulo className="relative inline-block">
+                        {s.nome}
+                      </span>
+                      <span data-rotulo-hover aria-hidden="true" className={cn('absolute top-0 left-0 z-[3] inline-block', inv ? 'text-tinta' : 'text-papel')}>
+                        {s.nome}
+                      </span>
+                    </span>
+                    {ativa === s.id && (
+                      <span aria-hidden="true" className="absolute -bottom-px left-1/2 z-[4] h-2.5 w-[5px] -translate-x-1/2 bg-laranja" />
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <span data-menu-entra>
+              <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tamanho="lg" tom={inv ? 'escuro' : 'claro'} className="h-12" />
+            </span>
+          </nav>
 
           <button
             ref={botao}
@@ -168,16 +200,15 @@ export function Menu() {
             aria-controls="menu-celular"
             onClick={() => setAberto((v) => !v)}
             className={cn(
-              'flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold md:hidden',
-              tom === 'escuro' ? 'text-papel' : 'text-tinta',
+              'flex h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors duration-300 md:hidden',
+              inv ? 'bg-papel text-tinta' : 'bg-tinta text-papel',
             )}
           >
             {aberto ? 'Fechar' : 'Menu'}
             <span aria-hidden="true" className={cn('block h-3 w-1.5 bg-laranja transition-transform duration-300', aberto && 'translate-y-0.5 rotate-[26.6deg]')} />
           </button>
-        </nav>
-      </GlassSurface>
-    </header>
+        </div>
+      </header>
 
       <div
         id="menu-celular"

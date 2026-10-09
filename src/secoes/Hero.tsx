@@ -42,7 +42,7 @@ export function Hero() {
         </p>
         <div data-hero-entra className="mt-9 flex flex-wrap items-center gap-3">
           <Magnetico>
-            <InteractiveHoverButton data-cta href={linkWhatsapp()} texto="Quero meu site" tamanho="lg" />
+            <InteractiveHoverButton data-cta href={linkWhatsapp()} texto="Quero meu site" tamanho="lg" tom="solido" />
           </Magnetico>
         </div>
       </div>
