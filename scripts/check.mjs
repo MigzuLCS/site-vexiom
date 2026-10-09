@@ -378,7 +378,7 @@ try {
   await wait(500)
   const hidden = await page.evaluate(() => {
     const els = [...document.querySelectorAll('main h1, main h2, main h3, main p, main li, main img, main [data-cta]')]
-      .filter((el) => el.getClientRects().length && !el.closest('[aria-hidden="true"]'))
+      .filter((el) => el.getClientRects().length && !el.closest('[aria-hidden="true"]') && !el.closest('[inert]')) // inert = painel fechado de acordeão (de propósito)
     return els
       .filter((el) => {
         let opacity = 1

@@ -4,6 +4,7 @@ import { QuemSomos } from '@/secoes/QuemSomos'
 import { Capacidades } from '@/secoes/Capacidades'
 import { Portfolio } from '@/secoes/Portfolio'
 import { Precos } from '@/secoes/Precos'
+import { Duvidas } from '@/secoes/Duvidas'
 import { cn } from '@/lib/utils'
 
 // Seções entram uma a uma (docs/DIRECTION.md). As provisórias só existem para o menu
@@ -33,6 +34,7 @@ export default function Pagina() {
         <Capacidades />
         <Portfolio />
         <Precos />
+        <Duvidas />
         <Provisoria id="contato" titulo="Contato" escuro />
       </main>
     </>

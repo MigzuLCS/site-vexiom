@@ -92,3 +92,12 @@
     visibility: hidden;
   }
 }
+
+/* Acordeão sem JS (ou se o app não montar): todas as respostas abertas, para nada
+   depender do clique. Com JS, cada pergunta abre e fecha (Duvidas.tsx). */
+html:not(.js) [data-pergunta] [inert] {
+  grid-template-rows: 1fr;
+}
+html:not(.js) [data-pergunta] [inert] p {
+  opacity: 1;
+}

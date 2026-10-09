@@ -13,7 +13,7 @@ export const SECOES = [
   { id: 'capacidades', nome: 'Capacidades' },
   { id: 'portfolio', nome: 'Portfólio' },
   { id: 'precos', nome: 'Preços' },
-  { id: 'contato', nome: 'Contato' },
+  { id: 'duvidas', nome: 'Dúvidas' },
 ]
 
 // Logo solta à esquerda; à direita, o menu em pílulas adaptado de React Bits "PillNav":
