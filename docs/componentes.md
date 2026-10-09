@@ -32,5 +32,8 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 |---|---|---|---|---|
 | — | — | — | — | — |
 
-## MCP do 21st.dev (opcional)
-O 21st.dev tem um servidor MCP que deixa o Claude buscar componentes no catálogo direto daqui (`npx @21st-dev/cli@latest init --client claude`). Precisa de uma chave de API criada em https://21st.dev/mcp, e buscar o código de componentes pelo MCP é pago no plano gratuito. Sem ele, basta colar a URL de instalação do componente na conversa.
+## Pesquisa no 21st.dev
+As skills do 21st (`npx @21st-dev/cli install-skill`) e o CLI `21st` estão instalados para o usuário. Login uma vez com `npx @21st-dev/cli login` (abre o navegador; nada de chave na conversa).
+- **Busca é gratuita:** `npx @21st-dev/cli search "<termo>" --type c --limit 10`. Fluxo: o Claude pesquisa e devolve uma lista curta de links; o usuário escolhe; o Claude instala.
+- **Baixar código pelo CLI** (`21st get` / `21st install`) usa uma cota diária gratuita. Prefira instalar pela URL do registro com o shadcn (acima).
+- Não usar a geração por IA do 21st (`21st-ai`) sem o usuário pedir: gasta créditos.
