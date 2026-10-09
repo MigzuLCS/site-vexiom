@@ -3,6 +3,8 @@ import { gsap, useGSAP, REDUZIR } from '@/lib/gsap'
 import { GradeDiagonal } from '@/components/fundos/GradeDiagonal'
 import { TextoDigitado } from '@/components/TextoDigitado'
 import { linkWhatsapp } from '@/conteudo'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
+import { Magnetico } from '@/components/Magnetico'
 
 export function Hero() {
   const raiz = useRef<HTMLElement>(null)
@@ -39,13 +41,9 @@ export function Hero() {
           A gente cria, publica e cuida do site do seu negócio. Você só responde os clientes no WhatsApp.
         </p>
         <div data-hero-entra className="mt-9 flex flex-wrap items-center gap-3">
-          <a
-            data-cta
-            href={linkWhatsapp()}
-            className="inline-flex h-13 items-center gap-2 bg-laranja px-7 text-base font-semibold text-tinta transition-transform duration-300 ease-vexiom hover:-translate-y-0.5"
-          >
-            Quero meu site
-          </a>
+          <Magnetico>
+            <InteractiveHoverButton data-cta href={linkWhatsapp()} texto="Quero meu site" tamanho="lg" />
+          </Magnetico>
         </div>
       </div>
     </section>

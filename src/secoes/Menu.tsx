@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, useGSAP, REDUZIR, prefereReduzir } from '@/lib/gsap'
 import { travarRolagem } from '@/components/SmoothScroll'
+import GlassSurface from '@/components/reactbits/GlassSurface'
+import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { linkWhatsapp } from '@/conteudo'
 import { cn } from '@/lib/utils'
 import { Logo } from '@/components/Logo'
@@ -13,18 +15,19 @@ export const SECOES = [
   { id: 'contato', nome: 'Contato' },
 ]
 
-// Menu fixo. O bloco laranja do símbolo marca a seção ativa e desliza entre os itens
-// (ideia do React Bits "PillNav"). Sobre seções escuras (data-escuro) o menu inverte.
-// Some ao rolar para baixo e volta ao rolar para cima. No celular, abre em tela cheia
-// com uma cortina na diagonal da marca.
+// Menu em pílula de vidro flutuante (estilo Liquid Glass): React Bits "GlassSurface".
+// Um destaque em pílula desliza entre os itens (ideia do React Bits "PillNav"): segue o
+// mouse e volta para a seção ativa, marcada também pelo bloco laranja da logo.
+// Sobre seções escuras (data-escuro) o vidro escurece. Some ao rolar para baixo e volta
+// ao rolar para cima. No celular, abre em tela cheia com uma cortina na diagonal da marca.
 export function Menu() {
   const raiz = useRef<HTMLElement>(null)
-  const bloco = useRef<HTMLSpanElement>(null)
+  const lista = useRef<HTMLDivElement>(null)
+  const pilula = useRef<HTMLSpanElement>(null)
   const painel = useRef<HTMLDivElement>(null)
   const botao = useRef<HTMLButtonElement>(null)
   const [ativa, setAtiva] = useState<string | null>(null)
   const [escuro, setEscuro] = useState(false)
-  const [rolou, setRolou] = useState(false)
   const [aberto, setAberto] = useState(false)
 
   // seção ativa, tema e esconder/mostrar ao rolar
@@ -32,12 +35,7 @@ export function Menu() {
     for (const s of SECOES) {
       const el = document.getElementById(s.id)
       if (!el) continue
-      ScrollTrigger.create({
-        trigger: el,
-        start: 'top 45%',
-        end: 'bottom 45%',
-        onToggle: (st) => st.isActive && setAtiva(s.id),
-      })
+      ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: (st) => st.isActive && setAtiva(s.id) })
     }
     ScrollTrigger.create({
       trigger: document.getElementById('quem-somos') ?? document.body,
@@ -45,33 +43,33 @@ export function Menu() {
       onLeaveBack: () => setAtiva(null),
     })
     for (const el of document.querySelectorAll<HTMLElement>('[data-escuro]')) {
-      ScrollTrigger.create({ trigger: el, start: 'top 32px', end: 'bottom 32px', onToggle: (st) => setEscuro(st.isActive) })
+      ScrollTrigger.create({ trigger: el, start: 'top 40px', end: 'bottom 40px', onToggle: (st) => setEscuro(st.isActive) })
     }
     ScrollTrigger.create({
       start: 0,
       end: 'max',
       onUpdate: (st) => {
-        setRolou(st.scroll() > 24)
         if (prefereReduzir()) return
         const esconder = st.direction === 1 && st.scroll() > 400
-        gsap.to(raiz.current, { yPercent: esconder ? -100 : 0, duration: 0.35, overwrite: 'auto' })
+        gsap.to(raiz.current, { yPercent: esconder ? -140 : 0, duration: 0.4, overwrite: 'auto' })
       },
     })
   })
 
-  // bloco desliza até o item ativo
-  useEffect(() => {
-    const b = bloco.current
-    const link = raiz.current?.querySelector<HTMLElement>(`[data-item="${ativa}"]`)
-    if (!b) return
+  // pílula de destaque: vai até um item (hover) ou volta para a seção ativa
+  const moverPilula = (id: string | null) => {
+    const p = pilula.current
+    const link = id ? lista.current?.querySelector<HTMLElement>(`[data-item="${id}"]`) : null
+    if (!p) return
     if (!link) {
-      gsap.to(b, { opacity: 0, duration: 0.2 })
+      gsap.to(p, { opacity: 0, duration: 0.25 })
       return
     }
-    const x = link.offsetLeft + 1
-    if (gsap.getProperty(b, 'opacity') === 0) gsap.set(b, { x })
-    gsap.to(b, { x, opacity: 1, duration: prefereReduzir() ? 0 : 0.5 })
-  }, [ativa])
+    const alvo = { x: link.offsetLeft, width: link.offsetWidth }
+    if (gsap.getProperty(p, 'opacity') === 0) gsap.set(p, alvo)
+    gsap.to(p, { ...alvo, opacity: 1, duration: prefereReduzir() ? 0 : 0.45, ease: 'vexiom' })
+  }
+  useEffect(() => moverPilula(ativa), [ativa])
 
   // menu do celular: cortina diagonal
   const cortina = useRef<gsap.core.Timeline | null>(null)
@@ -87,8 +85,7 @@ export function Menu() {
     }
     pintar()
     const tl = gsap.timeline({ paused: true })
-    const mm = gsap.matchMedia()
-    mm.add({ movimento: `not all and ${REDUZIR}`, reduzido: REDUZIR }, (c) => {
+    gsap.matchMedia().add({ movimento: `not all and ${REDUZIR}`, reduzido: REDUZIR }, (c) => {
       const d = c.conditions?.reduzido ? 0 : 1
       tl.clear()
         .to(borda, { e: 1, duration: 0.55 * d, ease: 'vexiom', onUpdate: pintar })
@@ -117,67 +114,76 @@ export function Menu() {
     return () => document.removeEventListener('keydown', esc)
   }, [aberto])
 
+  const tom = escuro || aberto ? 'escuro' : 'claro'
+
   return (
-    <header
-      ref={raiz}
-      className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-        rolou && !aberto && (escuro ? 'bg-tinta/80 backdrop-blur-md' : 'bg-papel/85 backdrop-blur-md'),
-        rolou && !aberto && 'shadow-[0_1px_0_rgb(20_20_20/0.08)]',
-      )}
-    >
-      <nav aria-label="Principal" className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-8">
-        <a href="#inicio" className="relative z-10 flex h-11 items-center" onClick={() => setAberto(false)}>
-          <Logo rotulo="Vexiom, início" className={cn('h-7 w-auto transition-colors duration-300', escuro || aberto ? 'text-papel' : 'text-tinta')} />
-        </a>
-
-        <div className="relative hidden items-center gap-1 md:flex">
-          <span
-            ref={bloco}
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-0 h-3 w-1.5 -translate-y-1/2 bg-laranja opacity-0"
-          />
-          {SECOES.map((s) => (
-            <a
-              key={s.id}
-              data-item={s.id}
-              href={`#${s.id}`}
-              aria-current={ativa === s.id ? 'true' : undefined}
-              className={cn(
-                'flex h-11 items-center px-3 text-sm font-medium transition-colors duration-300',
-                escuro ? 'text-papel/70 hover:text-papel' : 'text-cinza hover:text-tinta',
-                ativa === s.id && (escuro ? 'text-papel' : 'text-tinta'),
-              )}
-            >
-              {s.nome}
-            </a>
-          ))}
-          <a href={linkWhatsapp()} className="ml-3 inline-flex h-11 items-center bg-laranja px-5 text-sm font-semibold text-tinta">
-            Fale com a gente
+    <>
+    <header ref={raiz} className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4">
+      <GlassSurface
+        width="100%"
+        height={60}
+        borderRadius={30}
+        escuro={tom === 'escuro'}
+        backgroundOpacity={tom === 'escuro' ? 0.35 : 0.45}
+        brightness={tom === 'escuro' ? 40 : 60}
+        saturation={1.4}
+        className="relative z-10 mx-auto max-w-5xl transition-colors duration-300"
+      >
+        <nav aria-label="Principal" className="flex w-full items-center justify-between gap-4 pr-2 pl-5">
+          <a href="#inicio" className="flex h-11 items-center" onClick={() => setAberto(false)}>
+            <Logo rotulo="Vexiom, início" className={cn('h-6 w-auto transition-colors duration-300', tom === 'escuro' ? 'text-papel' : 'text-tinta')} />
           </a>
-        </div>
 
-        <button
-          ref={botao}
-          type="button"
-          aria-expanded={aberto}
-          aria-controls="menu-celular"
-          onClick={() => setAberto((v) => !v)}
-          className={cn(
-            'relative z-10 flex h-11 items-center gap-2 px-1 text-sm font-semibold md:hidden',
-            escuro || aberto ? 'text-papel' : 'text-tinta',
-          )}
-        >
-          {aberto ? 'Fechar' : 'Menu'}
-          <span aria-hidden="true" className={cn('block h-3 w-1.5 bg-laranja transition-transform duration-300', aberto && 'translate-y-0.5 rotate-[26.6deg]')} />
-        </button>
-      </nav>
+          <div ref={lista} className="relative hidden items-center md:flex" onPointerLeave={() => moverPilula(ativa)}>
+            <span
+              ref={pilula}
+              aria-hidden="true"
+              className={cn('pointer-events-none absolute top-1/2 left-0 h-9 -translate-y-1/2 rounded-full opacity-0', tom === 'escuro' ? 'bg-papel/12' : 'bg-tinta/7')}
+            />
+            {SECOES.map((s) => (
+              <a
+                key={s.id}
+                data-item={s.id}
+                href={`#${s.id}`}
+                onPointerEnter={() => moverPilula(s.id)}
+                aria-current={ativa === s.id ? 'true' : undefined}
+                className={cn(
+                  'relative flex h-11 items-center gap-2 rounded-full px-4 text-[13px] font-medium transition-colors duration-300',
+                  tom === 'escuro' ? 'text-papel/75 hover:text-papel' : 'text-tinta/70 hover:text-tinta',
+                  ativa === s.id && (tom === 'escuro' ? 'text-papel' : 'text-tinta'),
+                )}
+              >
+                <span aria-hidden="true" className={cn('h-2.5 w-[5px] bg-laranja transition-[opacity,transform] duration-300', ativa === s.id ? 'opacity-100' : 'w-0 opacity-0')} />
+                {s.nome}
+              </a>
+            ))}
+          </div>
+
+          <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tom={tom} className="hidden md:inline-flex" />
+
+          <button
+            ref={botao}
+            type="button"
+            aria-expanded={aberto}
+            aria-controls="menu-celular"
+            onClick={() => setAberto((v) => !v)}
+            className={cn(
+              'flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold md:hidden',
+              tom === 'escuro' ? 'text-papel' : 'text-tinta',
+            )}
+          >
+            {aberto ? 'Fechar' : 'Menu'}
+            <span aria-hidden="true" className={cn('block h-3 w-1.5 bg-laranja transition-transform duration-300', aberto && 'translate-y-0.5 rotate-[26.6deg]')} />
+          </button>
+        </nav>
+      </GlassSurface>
+    </header>
 
       <div
         id="menu-celular"
         ref={painel}
         inert={!aberto}
-        className="fixed inset-0 flex flex-col justify-end bg-tinta px-4 pt-24 pb-10 text-papel md:hidden"
+        className="fixed inset-0 z-40 flex flex-col justify-end bg-tinta px-4 pt-24 pb-10 text-papel md:hidden"
       >
         <ul className="space-y-1">
           {SECOES.map((s) => (
@@ -193,15 +199,10 @@ export function Menu() {
             </li>
           ))}
         </ul>
-        <a
-          data-painel-item
-          href={linkWhatsapp()}
-          onClick={() => setAberto(false)}
-          className="mt-10 inline-flex h-13 items-center justify-center bg-laranja px-6 font-semibold text-tinta"
-        >
-          Fale com a gente no WhatsApp
-        </a>
+        <div data-painel-item className="mt-10">
+          <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente no WhatsApp" tamanho="lg" tom="escuro" className="w-full" onClick={() => setAberto(false)} />
+        </div>
       </div>
-    </header>
+    </>
   )
 }

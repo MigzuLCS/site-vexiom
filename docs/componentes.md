@@ -32,7 +32,9 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 |---|---|---|---|---|
 | GradeDiagonal | React Bits ShapeGrid | fundo do hero | — | cores da marca, retina, deriva 63,4°, blocos laranja 1:2, cursor pela janela, para fora da tela |
 | TextoDigitado | React Bits TextType | título do hero | — | cursor = bloco laranja, texto reserva espaço, frase completa para leitor de tela, reduzir movimento |
-| Menu | ideia do React Bits PillNav (sem código copiado) | menu fixo | — | bloco laranja desliza até a seção ativa, tema escuro por seção, cortina diagonal no celular |
+| Menu | React Bits GlassSurface + ideia do PillNav | menu em pílula de vidro | — | tema pela seção (não pelo sistema), pílula de destaque segue o mouse e volta à seção ativa, bloco laranja no item ativo, cortina diagonal no celular |
+| InteractiveHoverButton | 21st.dev Interactive Hover Button (dillionverma, código colado pelo usuário) | botões do menu, hero e menu do celular | lucide-react | vira <a>, largura pelo texto, ponto = bloco laranja que pisca e cresce, tons claro/escuro, foco igual ao hover |
+| Magnetico | React Bits Magnet | botão do hero | — | GSAP quickTo, só mouse, desligado com reduzir movimento |
 | Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
 
 ## Pesquisa no 21st.dev
