@@ -9,7 +9,8 @@ import { cn } from '@/lib/utils'
 // reserva o espaço desde o início e a digitação corre numa camada por cima, então nada pula;
 // leitores de tela e buscadores leem a frase completa; com "reduzir movimento"
 // a frase aparece pronta. O HTML do build traz a frase inteira (sem JS ela fica lá);
-// com JS, o CSS a esconde até a digitação começar (global.css, "primeiro quadro").
+// com JS, o CSS esconde tudo menos a primeira palavra até a digitação começar
+// (global.css, "primeiro quadro"); a digitação continua da primeira palavra.
 type Props = {
   texto: string
   as?: ElementType
@@ -23,21 +24,24 @@ type Props = {
 const Espaco = () => <span className="inline-block w-[0.44em]" />
 
 export function TextoDigitado({ texto, as: Tag = 'span', className, atraso = 250, velocidade = { min: 16, max: 38 } }: Props) {
+  // a primeira palavra (com o espaço) já vem pronta: aparece no primeiro quadro, antes do JS,
+  // e a digitação continua dela (o título conta como "maior elemento" logo de cara, LCP)
+  const pronta = texto.match(/^\S+\s*/)?.[0].length ?? 0
   const [n, setN] = useState(texto.length)
   const [digitando, setDigitando] = useState(false)
 
   useEffect(() => {
     if (prefereReduzir()) return
-    setN(0)
+    setN(pronta)
     setDigitando(true)
-  }, [texto])
+  }, [texto, pronta])
 
   useEffect(() => {
     if (!digitando || n >= texto.length) return
-    const espera = n === 0 ? atraso : velocidade.min + Math.random() * (velocidade.max - velocidade.min)
+    const espera = n === pronta ? atraso : velocidade.min + Math.random() * (velocidade.max - velocidade.min)
     const t = setTimeout(() => setN((v) => v + 1), espera)
     return () => clearTimeout(t)
-  }, [n, digitando, texto, atraso, velocidade.min, velocidade.max])
+  }, [n, digitando, texto, pronta, atraso, velocidade.min, velocidade.max])
 
   return (
     <Tag className={className} data-digitado="" data-digitando={digitando ? '' : undefined}>
@@ -51,10 +55,13 @@ export function TextoDigitado({ texto, as: Tag = 'span', className, atraso = 250
           <Espaco />
         </span>
         <span className="absolute inset-0">
-          {texto.slice(0, n)}
+          {texto.slice(0, pronta)}
+          {/* antes do JS, o CSS esconde daqui em diante (global.css, "primeiro quadro") */}
+          <span data-digitado-resto="">{texto.slice(pronta, n)}</span>
           {/* cursor sem largura no fluxo (margem negativa = a própria largura): não muda onde as
               linhas quebram */}
           <span
+            data-digitado-resto=""
             className={cn(
               'mr-[-0.44em] ml-[0.06em] inline-block h-[0.82em] w-[0.38em] translate-y-[0.06em] bg-laranja align-baseline',
               n >= texto.length && 'animate-[piscar_1.05s_steps(1)_infinite]',
