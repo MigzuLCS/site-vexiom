@@ -10,8 +10,15 @@ import { prefereReduzir } from '@/lib/gsap'
 const TINTA = '20, 20, 20'
 const LARANJA = '242, 107, 29'
 const PAPEL = '245, 242, 236'
+const AZUL = '30, 58, 95'
 
-type Bloco = { x: number; y: number; v: number; escala: number; cheio: boolean; alfa: number }
+// Laranja é tempero (docs/marca.md): a maioria das barras é Azul ou Tinta.
+const sortearCor = () => {
+  const r = Math.random()
+  return r < 0.45 ? AZUL : r < 0.75 ? TINTA : LARANJA
+}
+
+type Bloco = { x: number; y: number; v: number; escala: number; cheio: boolean; alfa: number; cor: string }
 
 export function GradeDiagonal({ className = '' }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -39,7 +46,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       // nascem embaixo (ou espalhados na primeira tela) e sobem para a direita
       const y = inicio ? Math.random() * h : h + cel * 2 + Math.random() * h * 0.5
       const x = Math.random() * (w + h * 0.5) - h * 0.5
-      return { x, y, v: 18 + Math.random() * 34, escala, cheio: Math.random() < 0.55, alfa: 0.55 + Math.random() * 0.45 }
+      return { x, y, v: 18 + Math.random() * 34, escala, cheio: Math.random() < 0.55, alfa: 0.7 + Math.random() * 0.3, cor: sortearCor() }
     }
 
     const medir = () => {
@@ -62,7 +69,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       // células acesas pelo cursor
       for (const [chave, a] of acesas) {
         const [c, r] = chave.split(',').map(Number)
-        ctx.fillStyle = `rgba(${LARANJA}, ${a * 0.16})`
+        ctx.fillStyle = `rgba(${AZUL}, ${a * 0.12})`
         ctx.fillRect(c * cel + ox - cel, r * cel + oy - cel, cel, cel)
       }
 
@@ -80,7 +87,7 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       }
       ctx.stroke()
 
-      // barras laranja como as da logo: lados inclinados em 63,4°, pontas retas em cima
+      // barras como as da logo (Azul, Tinta e um pouco de Laranja): lados inclinados em 63,4°, pontas retas em cima
       // e embaixo; andam pelo próprio eixo e deixam um rastro que some
       for (const b of blocos) {
         const esp = cel * 0.32 // espessura horizontal da barra
@@ -95,18 +102,18 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
         }
         const rast = alt * 1.8
         const g = ctx.createLinearGradient(b.x, b.y + alt, b.x - rast / 2, b.y + alt + rast)
-        g.addColorStop(0, `rgba(${LARANJA}, ${0.25 * b.alfa})`)
-        g.addColorStop(1, `rgba(${LARANJA}, 0)`)
+        g.addColorStop(0, `rgba(${b.cor}, ${0.25 * b.alfa})`)
+        g.addColorStop(1, `rgba(${b.cor}, 0)`)
         ctx.fillStyle = g
         barra(b.x - rast / 2, b.y + alt, rast)
         ctx.fill()
 
         barra(b.x, b.y, alt)
         if (b.cheio) {
-          ctx.fillStyle = `rgba(${LARANJA}, ${b.alfa})`
+          ctx.fillStyle = `rgba(${b.cor}, ${b.cor === TINTA ? b.alfa * 0.85 : b.alfa})`
           ctx.fill()
         } else {
-          ctx.strokeStyle = `rgba(${LARANJA}, ${b.alfa})`
+          ctx.strokeStyle = `rgba(${b.cor}, ${b.alfa})`
           ctx.lineWidth = 1.5
           ctx.stroke()
         }
