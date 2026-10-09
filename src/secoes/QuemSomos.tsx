@@ -121,15 +121,15 @@ export function QuemSomos() {
     >
       <div data-cena>
         <div data-qs-intro className="mx-auto max-w-6xl px-4 pt-28 pb-16 sm:px-8 lg:pt-32 lg:pb-12">
-          <p data-qs-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-cinza uppercase">
+          <p data-qs-entra className="flex items-center gap-3 texto-legenda tracking-[0.18em] text-cinza uppercase">
             <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
             Quem somos
           </p>
           <TextoRevelado
             texto="Somos a Vexiom, um estúdio que cria sites para negócios: da loja do bairro ao sistema sob medida."
-            className="mt-6 max-w-[22ch] text-[clamp(2rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight"
+            className="mt-6 max-w-[22ch] texto-display"
           />
-          <p data-qs-entra className="mt-8 max-w-xl text-lg leading-relaxed text-cinza">
+          <p data-qs-entra className="mt-8 max-w-xl texto-corpo text-cinza">
             A gente cuida de tudo: texto, visual, domínio, Google e as alterações do dia a dia. Você continua focado no seu negócio.
           </p>
         </div>
@@ -151,12 +151,12 @@ export function QuemSomos() {
                   >
                   <span
                     aria-hidden="true"
-                    className={cn('mt-1 flex h-9 w-9 shrink-0 items-center justify-center text-sm font-bold transition-colors duration-500', ativo ? 'bg-tinta text-papel' : 'bg-tinta/10 text-tinta')}
+                    className={cn('mt-1 flex h-9 w-9 shrink-0 items-center justify-center text-sm font-semibold transition-colors duration-500', ativo ? 'bg-tinta text-papel' : 'bg-tinta/10 text-tinta')}
                   >
                     {i + 1}
                   </span>
                   <span className="block">
-                    <span className="flex items-center gap-3 font-display text-2xl font-bold tracking-tight">
+                    <span className="flex items-center gap-3 texto-h3">
                       {p.titulo}
                       <span aria-hidden="true" className="h-0.5 w-0 bg-laranja transition-[width] duration-300 ease-vexiom group-hover:w-6" />
                     </span>

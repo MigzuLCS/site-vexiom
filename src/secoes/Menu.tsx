@@ -236,7 +236,7 @@ export function Menu() {
               <a
                 href={`#${s.id}`}
                 onClick={() => setAberto(false)}
-                className="flex min-h-14 items-center gap-3 text-[clamp(2rem,9vw,2.75rem)] leading-none font-bold tracking-tight"
+                className="flex min-h-14 items-center gap-3 texto-h1 leading-none"
               >
                 <span aria-hidden="true" className={cn('h-5 w-2.5 bg-laranja', ativa !== s.id && 'opacity-0')} />
                 {s.nome}

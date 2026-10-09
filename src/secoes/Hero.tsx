@@ -35,15 +35,15 @@ export function Hero() {
       </div>
 
       <div data-hero-conteudo className="mx-auto w-full max-w-6xl origin-top-left px-4 pt-28 pb-16 sm:px-8">
-        <p data-hero-entra data-primeiro-quadro className="text-sm font-medium tracking-[0.18em] text-cinza uppercase">
+        <p data-hero-entra data-primeiro-quadro className="texto-legenda tracking-[0.18em] text-cinza uppercase">
           Vexiom · estúdio de sites
         </p>
         <TextoDigitado
           as="h1"
           texto="Um site que traz clientes. Agora é simples."
-          className="mt-5 block max-w-[14ch] text-[clamp(2.75rem,8vw,6.25rem)] leading-[0.95] font-bold tracking-tight text-balance"
+          className="mt-5 block max-w-[14ch] texto-display text-balance"
         />
-        <p data-hero-entra data-primeiro-quadro className="mt-7 max-w-xl text-lg leading-relaxed text-cinza sm:text-xl">
+        <p data-hero-entra data-primeiro-quadro className="mt-7 max-w-xl texto-corpo text-cinza">
           A gente cria, publica e cuida do site do seu negócio. Você só responde os clientes no WhatsApp.
         </p>
         <div data-hero-entra data-primeiro-quadro className="mt-9 flex flex-wrap items-center gap-3">

@@ -44,6 +44,16 @@ Definida no style guide do Figma ("Vexiom — Site", página 01 · Identidade Vi
 - **Red Hat Display** (fonte do logotipo): títulos (`h1`–`h3` já usam) e palavras/números de destaque (classe `font-display`: faixa de tecnologias, preços, e-mail grande, nomes dos passos).
 - **Montserrat**: textos, botões, menu, rótulos e legendas (fonte padrão do `body`, `--font-sans`).
 - As duas são auto-hospedadas via `@fontsource-variable` (nada de Google Fonts em tempo de execução).
+- **Escala** (classes em `global.css`; use-as em vez de tamanhos soltos):
+  | Classe | Guia | Celular → desktop | Onde |
+  |---|---|---|---|
+  | `texto-display` | Display, Red Hat Medium | 40/46 → 72/80 | hero e títulos de seção (frases de destaque) |
+  | `texto-h1` | H1, Red Hat Medium | 32/38 → 48/56 | links do menu do celular |
+  | `texto-h3` | H3, Red Hat SemiBold | 20/26 → 22/30 | nomes de passos, capacidades, projetos, planos, perguntas |
+  | `texto-corpo` | Body, Montserrat Regular | 16/24 → 16/26 | parágrafos |
+  | botões | Button, Montserrat SemiBold | 14/20 | `InteractiveHoverButton` |
+  | `texto-legenda` | Caption, Montserrat Regular | 12/16 → 12/18 | rótulos de seção em caixa alta |
+- O H2 do guia (32/40) não é usado: os títulos de seção do site são frases de destaque e ficam no Display. Sem Bold na Red Hat; destaques decorativos (faixa de tecnologias, preços, e-mail) usam Medium.
 
 ## Linguagem de movimento (o que torna o site "Vexiom")
 O site é bem dinâmico e pode usar efeitos de biblioteca (GSAP, React Bits, 21st.dev). Os gestos abaixo saem da logo e são a **assinatura**: aparecem nos momentos-chave (abertura, transições, CTA) e dão unidade ao resto. Efeito de biblioteca entra recolorido e no ritmo da marca (`docs/componentes.md`).

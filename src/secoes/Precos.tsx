@@ -59,14 +59,14 @@ export function Precos() {
 
       <div className="mx-auto max-w-6xl px-4 py-28 sm:px-8 lg:py-36">
         <div className="mx-auto max-w-2xl text-center">
-          <p data-precos-entra className="flex items-center justify-center gap-3 text-sm font-medium tracking-[0.18em] text-papel/65 uppercase">
+          <p data-precos-entra className="flex items-center justify-center gap-3 texto-legenda tracking-[0.18em] text-papel/65 uppercase">
             <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
             Preços
           </p>
-          <h2 data-precos-entra className="mt-6 text-[clamp(2.25rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight">
+          <h2 data-precos-entra className="mt-6 texto-display">
             Criação mais uma mensalidade. Só isso.
           </h2>
-          <p data-precos-entra className="mt-6 text-lg leading-relaxed text-papel/75">
+          <p data-precos-entra className="mt-6 texto-corpo text-papel/75">
             Você paga a criação do site uma vez. A mensalidade cobre hospedagem, domínio, segurança e as alterações do dia a dia.
           </p>
         </div>
@@ -123,7 +123,7 @@ export function Precos() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="text-2xl font-bold tracking-tight">{p.nome}</h3>
+                    <h3 className="texto-h3">{p.nome}</h3>
                     <p className={cn('mt-1 text-sm', destaque ? 'text-cinza' : 'text-papel/65')}>{p.tipo}</p>
                   </div>
                   {destaque && (
@@ -137,7 +137,7 @@ export function Precos() {
                 <div className="mt-8">
                   <p className={cn('text-sm', destaque ? 'text-cinza' : 'text-papel/65')}>{p.aPartirDe ? 'Criação, a partir de' : 'Criação'}</p>
                   <p className="mt-1 flex items-baseline gap-3">
-                    <Valor valor={fundador ? p.criacao.fundador : p.criacao.tabela} className="font-display text-5xl font-bold tracking-tight tabular-nums" />
+                    <Valor valor={fundador ? p.criacao.fundador : p.criacao.tabela} className="font-display text-5xl font-medium tracking-tight tabular-nums" />
                     {fundador && (
                       <span className={cn('text-base line-through', destaque ? 'text-cinza' : 'text-papel/50')}>
                         {p.criacao.tabela.toLocaleString('pt-BR', REAIS)}

@@ -127,12 +127,12 @@ export function Portfolio() {
         className="mx-auto grid max-w-6xl gap-16 px-4 py-28 sm:px-8 lg:grid-cols-3 lg:gap-10 lg:py-36 data-[horizontal]:mx-0 data-[horizontal]:flex data-[horizontal]:h-full data-[horizontal]:w-max data-[horizontal]:max-w-none data-[horizontal]:items-center data-[horizontal]:gap-[6vw] data-[horizontal]:py-0 data-[horizontal]:pr-[8vw] data-[horizontal]:pl-[max(2rem,calc((100vw-72rem)/2+2rem))]"
       >
         <header className="lg:col-span-3 [[data-horizontal]_&]:w-[30vw] [[data-horizontal]_&]:shrink-0">
-          <p className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-papel/60 uppercase">
+          <p className="flex items-center gap-3 texto-legenda tracking-[0.18em] text-papel/60 uppercase">
             <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
             Portfólio
           </p>
-          <h2 className="mt-6 text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.95] font-bold tracking-tight">Projetos-<wbr />modelo.</h2>
-          <p className="mt-6 max-w-md text-lg leading-relaxed text-papel/70">
+          <h2 className="mt-6 texto-display">Projetos-<wbr />modelo.</h2>
+          <p className="mt-6 max-w-md texto-corpo text-papel/70">
             Sites que criamos para negócios fictícios, para mostrar o que dá para fazer. Os primeiros clientes entram aqui.
           </p>
         </header>
@@ -176,7 +176,7 @@ export function Portfolio() {
                 Projeto-modelo
               </span>
             </div>
-            <h3 className="mt-2 text-3xl font-bold tracking-tight">{p.nome}</h3>
+            <h3 className="mt-2 texto-h3">{p.nome}</h3>
             <p className="mt-3 max-w-xl leading-relaxed text-papel/70">{p.texto}</p>
           </article>
         ))}

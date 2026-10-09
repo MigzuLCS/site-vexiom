@@ -116,3 +116,40 @@ html:not(.js) [data-pergunta] [inert] p {
 section[tabindex='-1']:focus {
   outline: none;
 }
+
+/* Escala tipográfica do style guide (Figma "Vexiom — Site" › 01 · Identidade Visual).
+   Celular → desktop, crescendo com a tela. Títulos de seção do site são frases de destaque:
+   usam o nível Display (o H2 de 32 px do guia fica pequeno para elas). */
+@utility texto-display {
+  /* Red Hat Display Medium · 40/46 → 72/80 */
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+@utility texto-h1 {
+  /* Red Hat Display Medium · 32/38 → 48/56 */
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.55rem + 1.6vw, 3rem);
+  line-height: 1.17;
+  letter-spacing: -0.015em;
+}
+@utility texto-h3 {
+  /* Red Hat Display SemiBold · 20/26 → 22/30 */
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 1.18rem + 0.25vw, 1.375rem);
+  line-height: 1.33;
+}
+@utility texto-corpo {
+  /* Montserrat Regular · 16/24 → 16/26 */
+  font-size: 1rem;
+  line-height: 1.625;
+}
+@utility texto-legenda {
+  /* Montserrat Regular · 12/16 → 12/18 */
+  font-size: 0.75rem;
+  line-height: 1.5;
+}

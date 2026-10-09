@@ -75,15 +75,15 @@ export function Capacidades() {
         className="absolute inset-0 -z-10 bg-[linear-gradient(rgb(20_20_20/0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(20_20_20/0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_60%)]"
       />
       <div className="mx-auto max-w-6xl px-4 pt-20 pb-20 sm:px-8 lg:pt-28 lg:pb-28">
-        <p data-cap-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-tinta/70 uppercase">
+        <p data-cap-entra className="flex items-center gap-3 texto-legenda tracking-[0.18em] text-tinta/70 uppercase">
           <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
           Capacidades
         </p>
         <div className="mt-6 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
-          <h2 data-cap-entra className="max-w-[16ch] text-[clamp(2rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight">
+          <h2 data-cap-entra className="max-w-[16ch] texto-display">
             Do site de uma página ao sistema sob medida.
           </h2>
-          <p data-cap-entra className="max-w-md text-lg leading-relaxed text-tinta/70 lg:justify-self-end">
+          <p data-cap-entra className="max-w-md texto-corpo text-tinta/70 lg:justify-self-end">
             Cada tipo de site tem a tecnologia certa por trás. Você não precisa escolher: a gente indica na conversa.
           </p>
         </div>
@@ -105,7 +105,7 @@ export function Capacidades() {
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
-                  <h3 className="flex items-center gap-3 text-2xl font-bold tracking-tight sm:text-3xl">
+                  <h3 className="flex items-center gap-3 texto-h3">
                     {c.nome}
                     <span aria-hidden="true" className="h-[0.6em] w-[0.3em] scale-y-0 bg-laranja transition-transform duration-300 ease-vexiom group-hover:scale-y-100" />
                   </h3>
@@ -130,7 +130,7 @@ export function Capacidades() {
 
       <FaixaVelocidade
         linhas={FAIXA}
-        className="bg-tinta py-10 text-[clamp(2.25rem,6vw,5rem)] leading-[1.15] font-bold tracking-tight text-papel [&_[data-trilho]:nth-of-type(2)]:text-papel/35 sm:py-14"
+        className="bg-tinta py-10 text-[clamp(2.25rem,6vw,5rem)] leading-[1.15] font-medium tracking-tight text-papel [&_[data-trilho]:nth-of-type(2)]:text-papel/35 sm:py-14"
       />
     </section>
   )

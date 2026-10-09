@@ -56,14 +56,14 @@ export function Duvidas() {
     <section ref={raiz} id="duvidas" className="relative bg-papel">
       <div className="mx-auto grid max-w-6xl gap-12 px-4 py-28 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 lg:py-36">
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <p data-duvidas-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-cinza uppercase">
+          <p data-duvidas-entra className="flex items-center gap-3 texto-legenda tracking-[0.18em] text-cinza uppercase">
             <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
             Dúvidas
           </p>
-          <h2 data-duvidas-entra className="mt-6 max-w-[12ch] text-[clamp(2rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight">
+          <h2 data-duvidas-entra className="mt-6 max-w-[12ch] texto-display">
             Perguntas que todo mundo faz.
           </h2>
-          <p data-duvidas-entra className="mt-6 max-w-sm text-lg leading-relaxed text-cinza">
+          <p data-duvidas-entra className="mt-6 max-w-sm texto-corpo text-cinza">
             Não achou a sua? Pergunta direto pra gente.
           </p>
           <div data-duvidas-entra className="mt-8">
@@ -83,7 +83,7 @@ export function Duvidas() {
                     aria-expanded={aberto}
                     aria-controls={id}
                     onClick={() => setAberta(aberto ? null : i)}
-                    className="group flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left text-lg font-semibold sm:text-xl"
+                    className="group flex w-full cursor-pointer items-center justify-between gap-6 py-6 text-left texto-h3"
                   >
                     {q.p}
                     <span aria-hidden="true" className="relative grid size-6 shrink-0 place-items-center">

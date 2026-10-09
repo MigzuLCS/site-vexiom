@@ -20,7 +20,7 @@ export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
       ref={ref}
       className={cn(
         'group relative isolate inline-flex cursor-pointer items-center justify-center overflow-hidden rounded-full font-semibold ring-1 ring-inset whitespace-nowrap transition-[background-color,box-shadow] delay-150 duration-200 hover:bg-laranja hover:ring-transparent focus-visible:bg-laranja focus-visible:ring-transparent',
-        tamanho === 'md' ? 'h-11 pr-5 pl-9 text-sm' : 'h-14 pr-8 pl-12 text-base',
+        tamanho === 'md' ? 'h-11 pr-5 pl-9 text-sm' : 'h-14 pr-8 pl-12 text-sm',
         tom === 'claro' && 'bg-papel/70 text-tinta ring-tinta/15',
         tom === 'escuro' && 'bg-papel/10 text-papel ring-papel/25',
         tom === 'solido' && 'bg-tinta text-papel ring-transparent',

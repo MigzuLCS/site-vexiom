@@ -58,22 +58,22 @@ export function Contato() {
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_30%_40%,transparent_15%,rgb(30_58_95/0.9)_70%)]" />
 
       <div className="mx-auto max-w-6xl px-4 pt-28 pb-16 sm:px-8 lg:pt-36">
-        <p data-contato-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-papel/65 uppercase">
+        <p data-contato-entra className="flex items-center gap-3 texto-legenda tracking-[0.18em] text-papel/65 uppercase">
           <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
           Contato
         </p>
         <TextoRevelado
           texto="Vamos colocar o seu negócio na internet?"
-          className="mt-6 max-w-[16ch] text-[clamp(2.5rem,6.5vw,5.5rem)] leading-[1] font-bold tracking-tight"
+          className="mt-6 max-w-[16ch] texto-display"
         />
-        <p data-contato-entra className="mt-6 max-w-lg text-lg leading-relaxed text-papel/75">
+        <p data-contato-entra className="mt-6 max-w-lg texto-corpo text-papel/75">
           Conta o que você precisa e como funciona o seu negócio. A gente responde com o plano certo para você.
         </p>
 
         <div data-contato-entra className="mt-12 flex flex-wrap items-center gap-x-4 gap-y-3">
           <a
             href={linkEmail()}
-            className="group font-display text-[clamp(1.5rem,4.5vw,3.25rem)] font-bold tracking-tight break-all decoration-laranja decoration-[3px] underline-offset-8 hover:underline focus-visible:underline"
+            className="group font-display text-[clamp(1.5rem,4.5vw,3.25rem)] font-medium tracking-tight break-all decoration-laranja decoration-[3px] underline-offset-8 hover:underline focus-visible:underline"
           >
             {EMAIL}
           </a>
