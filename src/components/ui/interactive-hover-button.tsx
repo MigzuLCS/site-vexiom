@@ -4,13 +4,13 @@ import { cn } from '@/lib/utils'
 
 // Adaptado de 21st.dev "Interactive Hover Button" (dillionverma).
 // Mudanças: é um link (<a>), não <button>; largura pelo texto (o original fixava w-32);
-// o ponto que cresce é o bloco laranja da logo (retângulo 1:2), que pisca como cursor
-// enquanto espera; ao crescer vira o fundo laranja e o texto entra com a seta.
+// o ponto que cresce é o bloco laranja da logo (retângulo 1:2), parado (só o cursor do
+// título pisca, para não competir); ao crescer vira o fundo laranja e o texto entra com a seta.
 // Tamanhos: "md" e "lg". Tom "claro"/"escuro" conforme o fundo; "solido" (Tinta) para a ação principal.
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
   texto: string
   tamanho?: 'md' | 'lg'
-  tom?: 'claro' | 'escuro' | 'solido'
+  tom?: 'claro' | 'escuro' | 'solido' | 'solido-inverso'
 }
 
 export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
@@ -23,6 +23,7 @@ export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
         tom === 'claro' && 'border-tinta/15 bg-papel/70 text-tinta',
         tom === 'escuro' && 'border-papel/25 bg-papel/10 text-papel',
         tom === 'solido' && 'border-tinta bg-tinta text-papel',
+        tom === 'solido-inverso' && 'border-papel bg-papel text-tinta',
         className,
       )}
       {...props}
@@ -40,9 +41,9 @@ export const InteractiveHoverButton = forwardRef<HTMLAnchorElement, Props>(
       <span
         aria-hidden="true"
         className={cn(
-          'absolute top-1/2 -z-10 -translate-y-1/2 rounded-[1px] bg-laranja transition-all duration-400 ease-vexiom motion-safe:animate-[piscar_1.05s_steps(1)_infinite]',
-          'group-hover:top-0 group-hover:left-0 group-hover:h-full group-hover:w-full group-hover:translate-y-0 group-hover:scale-[1.8] group-hover:animate-none',
-          'group-focus-visible:top-0 group-focus-visible:left-0 group-focus-visible:h-full group-focus-visible:w-full group-focus-visible:translate-y-0 group-focus-visible:scale-[1.8] group-focus-visible:animate-none',
+          'absolute top-1/2 -z-10 -translate-y-1/2 rounded-[1px] bg-laranja transition-all duration-400 ease-vexiom',
+          'group-hover:top-0 group-hover:left-0 group-hover:h-full group-hover:w-full group-hover:translate-y-0 group-hover:scale-[1.8]',
+          'group-focus-visible:top-0 group-focus-visible:left-0 group-focus-visible:h-full group-focus-visible:w-full group-focus-visible:translate-y-0 group-focus-visible:scale-[1.8]',
           tamanho === 'md' ? 'left-4 h-3 w-1.5' : 'left-6 h-4 w-2',
         )}
       />

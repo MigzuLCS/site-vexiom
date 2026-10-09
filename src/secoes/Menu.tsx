@@ -15,7 +15,7 @@ export const SECOES = [
 ]
 
 // Logo solta à esquerda; à direita, o menu em pílulas adaptado de React Bits "PillNav":
-// trilha Tinta com pílulas Papel; no hover um círculo sobe de baixo e preenche a pílula
+// trilha clara com borda fina e itens em texto, botão de contato sólido na ponta; no hover um círculo sobe de baixo e preenche a pílula
 // enquanto o texto troca deslizando. O item ativo ganha o bloco laranja da logo embaixo
 // (no original era uma bolinha). Sobre seções escuras (data-escuro) as cores se invertem.
 // Tudo some ao rolar para baixo e volta ao rolar para cima. No celular, menu de tela
@@ -151,11 +151,14 @@ export function Menu() {
             <Logo rotulo="Vexiom, início" className={cn('h-7 w-auto transition-colors duration-300', inv ? 'text-papel' : 'text-tinta')} />
           </a>
 
-          <nav aria-label="Principal" className="hidden items-center gap-3 md:flex">
+          <nav aria-label="Principal" className="hidden md:block">
             <ul
               data-menu-entra
               ref={trilha}
-              className={cn('flex h-12 items-stretch gap-[3px] rounded-full p-[3px] transition-colors duration-300', inv ? 'bg-papel' : 'bg-tinta')}
+              className={cn(
+                'flex h-[52px] items-stretch gap-0.5 rounded-full border p-1 backdrop-blur-sm transition-colors duration-300',
+                inv ? 'border-papel/15 bg-tinta/70' : 'border-tinta/10 bg-papel/85',
+              )}
             >
               {SECOES.map((s, i) => (
                 <li key={s.id} className="flex">
@@ -169,7 +172,8 @@ export function Menu() {
                     onBlur={() => sair(i)}
                     className={cn(
                       'relative inline-flex items-center overflow-hidden rounded-full px-[18px] text-sm leading-none font-semibold whitespace-nowrap transition-colors duration-300',
-                      inv ? 'bg-tinta text-papel' : 'bg-papel text-tinta',
+                      inv ? 'text-papel/75' : 'text-tinta/75',
+                      ativa === s.id && (inv ? 'text-papel' : 'text-tinta'),
                     )}
                   >
                     <span data-circulo aria-hidden="true" className={cn('pointer-events-none absolute bottom-0 left-1/2 z-[1] block rounded-full', inv ? 'bg-papel' : 'bg-tinta')} />
@@ -182,15 +186,15 @@ export function Menu() {
                       </span>
                     </span>
                     {ativa === s.id && (
-                      <span aria-hidden="true" className="absolute -bottom-px left-1/2 z-[4] h-2.5 w-[5px] -translate-x-1/2 bg-laranja" />
+                      <span aria-hidden="true" className="absolute bottom-1 left-1/2 z-[4] h-2 w-1 -translate-x-1/2 bg-laranja" />
                     )}
                   </a>
                 </li>
               ))}
+              <li className="ml-1 flex">
+                <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tom={inv ? 'solido-inverso' : 'solido'} className="h-full" />
+              </li>
             </ul>
-            <span data-menu-entra>
-              <InteractiveHoverButton href={linkWhatsapp()} texto="Fale com a gente" tamanho="lg" tom={inv ? 'escuro' : 'claro'} className="h-12" />
-            </span>
           </nav>
 
           <button
