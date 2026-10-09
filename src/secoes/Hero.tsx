@@ -15,6 +15,10 @@ export function Hero() {
         gsap.from('[data-hero-fundo]', { opacity: 0, duration: 1.2 })
         // entram na diagonal da marca: vêm de baixo-esquerda (1 para o lado a cada 2 na vertical)
         gsap.from('[data-hero-entra]', { opacity: 0, x: -10, y: 20, stagger: 0.08, delay: 0.25 })
+        // parallax de saída: o conteúdo recua e esmaece enquanto Quem somos sobe por cima
+        const saida = { trigger: raiz.current, start: 'top top', end: 'bottom top', scrub: true }
+        gsap.to('[data-hero-conteudo]', { yPercent: 30, scale: 0.94, opacity: 0.15, ease: 'none', scrollTrigger: saida })
+        gsap.to('[data-hero-fundo]', { yPercent: 18, ease: 'none', scrollTrigger: saida })
       })
     },
     { scope: raiz },
@@ -28,7 +32,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_25%_55%,var(--color-papel)_20%,transparent_65%)] max-md:bg-[radial-gradient(ellipse_at_50%_45%,var(--color-papel)_25%,transparent_80%)]" />
       </div>
 
-      <div className="mx-auto w-full max-w-6xl px-4 pt-28 pb-16 sm:px-8">
+      <div data-hero-conteudo className="mx-auto w-full max-w-6xl origin-top-left px-4 pt-28 pb-16 sm:px-8">
         <p data-hero-entra className="text-sm font-medium tracking-[0.18em] text-cinza uppercase">
           Vexiom · estúdio de sites
         </p>
@@ -42,7 +46,7 @@ export function Hero() {
         </p>
         <div data-hero-entra className="mt-9 flex flex-wrap items-center gap-3">
           <Magnetico>
-            <InteractiveHoverButton data-cta href={linkWhatsapp()} texto="Quero meu site" tamanho="lg" tom="solido" />
+            <InteractiveHoverButton data-cta href="#precos" texto="Quero meu site" tamanho="lg" tom="solido" />
           </Magnetico>
         </div>
       </div>

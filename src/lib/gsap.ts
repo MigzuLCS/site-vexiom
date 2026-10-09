@@ -13,6 +13,8 @@ CustomEase.create('vexiom', '0.2,0.7,0.1,1')
 gsap.defaults({ ease: 'vexiom', duration: 0.6 })
 
 export const REDUZIR = '(prefers-reduced-motion: reduce)'
+// Para combinar com outras condições (ex.: largura) use MOVIMENTO: 'not all and' não combina.
+export const MOVIMENTO = '(prefers-reduced-motion: no-preference)'
 export const prefereReduzir = () => typeof matchMedia !== 'undefined' && matchMedia(REDUZIR).matches
 
 export { gsap, ScrollTrigger, SplitText, useGSAP }

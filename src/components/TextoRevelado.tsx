@@ -1,0 +1,46 @@
+import { useMemo, useRef, type ElementType } from 'react'
+import { gsap, useGSAP, REDUZIR } from '@/lib/gsap'
+import { cn } from '@/lib/utils'
+
+// Adaptado de React Bits "ScrollReveal": as palavras saem do desfoque e ganham opacidade
+// conforme a rolagem. Mudanças: limpeza só dos próprios gatilhos (o original matava todos
+// os ScrollTriggers da página ao desmontar), sem <p> dentro de <h2>, rotação inicial no
+// eixo da marca, e com "reduzir movimento" o texto já aparece pronto.
+type Props = { texto: string; as?: ElementType; className?: string }
+
+export function TextoRevelado({ texto, as: Tag = 'h2', className }: Props) {
+  const ref = useRef<HTMLElement>(null)
+  const palavras = useMemo(
+    () =>
+      texto.split(/(\s+)/).map((p, i) =>
+        /^\s+$/.test(p) ? (
+          p
+        ) : (
+          <span key={i} data-palavra className="inline-block">
+            {p}
+          </span>
+        ),
+      ),
+    [texto],
+  )
+
+  useGSAP(
+    () => {
+      gsap.matchMedia().add(`not all and ${REDUZIR}`, () => {
+        const el = ref.current
+        if (!el) return
+        const ps = el.querySelectorAll('[data-palavra]')
+        const gatilho = { trigger: el, start: 'top bottom-=15%', end: 'bottom center', scrub: true }
+        gsap.fromTo(el, { rotate: 1.5, transformOrigin: '0% 50%' }, { rotate: 0, ease: 'none', scrollTrigger: { ...gatilho, start: 'top bottom' } })
+        gsap.fromTo(ps, { opacity: 0.12, filter: 'blur(4px)' }, { opacity: 1, filter: 'blur(0px)', ease: 'none', stagger: 0.05, scrollTrigger: gatilho })
+      })
+    },
+    { scope: ref },
+  )
+
+  return (
+    <Tag ref={ref} className={cn(className)}>
+      {palavras}
+    </Tag>
+  )
+}

@@ -34,6 +34,8 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 | TextoDigitado | React Bits TextType | título do hero | — | cursor = bloco laranja, texto reserva espaço, frase completa para leitor de tela, reduzir movimento |
 | Menu | React Bits PillNav (adaptado; GlassSurface testado e recusado pelo usuário: não combina com a marca) | menu: logo solta à esquerda, trilha de pílulas à direita | — | sem react-router; trilha clara com borda fina e itens em texto (a versão Tinta/Papel pesou no desktop), botão de contato sólido dentro da trilha; bloco laranja no item ativo (no original, bolinha); foco do teclado faz o mesmo que o hover; cortina diagonal no celular |
 | InteractiveHoverButton | 21st.dev Interactive Hover Button (dillionverma, código colado pelo usuário) | botões do menu, hero (tom sólido) e menu do celular | lucide-react | vira <a>, largura pelo texto, ponto = bloco laranja parado que cresce (só o cursor do título pisca), tons claro/escuro, foco igual ao hover |
+| TextoRevelado | React Bits ScrollReveal | frase de Quem somos | — | limpa só os próprios gatilhos (o original matava todos os ScrollTriggers), sem <p> dentro de <h2>, reduzir movimento = pronto |
+| Montagem (Quem somos) | ideia de 21st Sticky Content Wrapper / Scroll 01 / Safari mockup (sem código copiado) | Quem somos | — | janela fixa no desktop, rolagem monta o site em 3 passos |
 | Magnetico | React Bits Magnet | botão do hero | — | GSAP quickTo, só mouse, desligado com reduzir movimento |
 | Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
 
