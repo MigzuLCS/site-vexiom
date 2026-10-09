@@ -67,11 +67,10 @@
   h3 {
     font-family: var(--font-display);
   }
-  /* seleção de texto na cor da marca (no lugar do azul do navegador): Laranja com Tinta,
-     o mesmo par do botão, legível em todos os fundos do site */
+  /* seleção de texto na cor da marca (no lugar do azul do navegador): Laranja translúcido,
+     com o texto na própria cor (Tinta no claro, Papel no escuro) */
   ::selection {
-    background: var(--color-laranja);
-    color: var(--color-tinta);
+    background: rgb(242 107 29 / 0.35);
   }
   :focus-visible {
     outline: 2px solid var(--color-laranja);
