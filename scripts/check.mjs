@@ -258,6 +258,9 @@ try {
         for (const e of list.getEntries()) window.__lcp = e.startTime
       }).observe({ type: 'largest-contentful-paint', buffered: true })
     })
+    // Força "sem preferência": se o Windows estiver com efeitos de animação desligados,
+    // o navegador herdaria "reduzir movimento" e o check nunca veria a versão animada.
+    await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'no-preference' }])
     await page.setViewport({ width, height })
     if (name === 'mobile') await page.emulateCPUThrottling(4)
     await page.goto(url, { waitUntil: 'networkidle0' })

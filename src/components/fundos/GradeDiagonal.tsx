@@ -3,8 +3,8 @@ import { prefereReduzir } from '@/lib/gsap'
 
 // Adaptado de React Bits "ShapeGrid" (variante quadrada, com rastro do cursor).
 // Mudanças: cores da marca, nitidez em telas retina, a grade desliza no eixo da logo
-// (1 para o lado a cada 2 para cima = 63,4°), blocos laranja na proporção do bloco do
-// símbolo (1:2) sobem pela mesma diagonal, e o cursor é lido na janela inteira
+// (1 para o lado a cada 2 para cima = 63,4°), barras laranja no desenho das barras do
+// símbolo sobem pela mesma diagonal, e o cursor é lido na janela inteira
 // (o conteúdo do hero fica por cima do canvas).
 
 const TINTA = '20, 20, 20'
@@ -77,28 +77,35 @@ export function GradeDiagonal({ className = '' }: { className?: string }) {
       }
       ctx.stroke()
 
-      // blocos laranja com o rastro da subida
+      // barras laranja como as da logo: lados inclinados em 63,4°, pontas retas em cima
+      // e embaixo; andam pelo próprio eixo e deixam um rastro que some
       for (const b of blocos) {
-        const bw = (cel / 2) * b.escala
-        const bh = cel * b.escala
-        const rast = bh * 1.6
-        const g = ctx.createLinearGradient(b.x + bw / 2, b.y + bh, b.x + bw / 2 - rast / 2, b.y + bh + rast)
-        g.addColorStop(0, `rgba(${LARANJA}, ${0.22 * b.alfa})`)
+        const esp = cel * 0.32 // espessura horizontal da barra
+        const alt = cel * 1.5 * b.escala
+        const barra = (x: number, y: number, a: number) => {
+          ctx.beginPath()
+          ctx.moveTo(x, y + a)
+          ctx.lineTo(x + esp, y + a)
+          ctx.lineTo(x + esp + a / 2, y)
+          ctx.lineTo(x + a / 2, y)
+          ctx.closePath()
+        }
+        const rast = alt * 1.8
+        const g = ctx.createLinearGradient(b.x, b.y + alt, b.x - rast / 2, b.y + alt + rast)
+        g.addColorStop(0, `rgba(${LARANJA}, ${0.25 * b.alfa})`)
         g.addColorStop(1, `rgba(${LARANJA}, 0)`)
-        ctx.strokeStyle = g
-        ctx.lineWidth = bw * 0.5
-        ctx.beginPath()
-        ctx.moveTo(b.x + bw / 2, b.y + bh)
-        ctx.lineTo(b.x + bw / 2 - rast / 2, b.y + bh + rast)
-        ctx.stroke()
+        ctx.fillStyle = g
+        barra(b.x - rast / 2, b.y + alt, rast)
+        ctx.fill()
 
+        barra(b.x, b.y, alt)
         if (b.cheio) {
           ctx.fillStyle = `rgba(${LARANJA}, ${b.alfa})`
-          ctx.fillRect(b.x, b.y, bw, bh)
+          ctx.fill()
         } else {
           ctx.strokeStyle = `rgba(${LARANJA}, ${b.alfa})`
           ctx.lineWidth = 1.5
-          ctx.strokeRect(b.x + 0.75, b.y + 0.75, bw - 1.5, bh - 1.5)
+          ctx.stroke()
         }
       }
 
