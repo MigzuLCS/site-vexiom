@@ -37,6 +37,8 @@ const FAIXA = [
   ['WhatsApp', 'Mapa', 'Horários', 'Agendamento', 'Cardápio com pedidos', 'Loja', 'Blog', 'Área do cliente'],
 ]
 
+// Fundo: papel mais escuro (#E9E4DA) com grade fina, para virar a página em relação ao
+// Quem somos; no desktop a seção sobe por cima do fim da cena presa dele.
 // Lista de capacidades (referência: 21st.dev Super Hover List): no hover/foco uma faixa
 // Tinta atravessa a linha na diagonal da marca e o texto inverte. Todo o conteúdo fica
 // visível sem hover. Embaixo, a faixa de tecnologias que acelera com a rolagem e já
@@ -62,9 +64,18 @@ export function Capacidades() {
   )
 
   return (
-    <section ref={raiz} id="capacidades" className="relative z-10 bg-papel">
-      <div className="mx-auto max-w-6xl px-4 pt-28 pb-20 sm:px-8 lg:pt-36 lg:pb-28">
-        <p data-cap-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-cinza uppercase">
+    <section
+      ref={raiz}
+      id="capacidades"
+      className="relative isolate z-20 bg-papel-escuro shadow-[0_-24px_48px_-36px_rgb(20_20_20/0.22)] lg:-mt-40"
+    >
+      {/* grade fina e parada, eco da grade do hero; some para baixo */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(rgb(20_20_20/0.05)_1px,transparent_1px),linear-gradient(90deg,rgb(20_20_20/0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:linear-gradient(to_bottom,black,transparent_60%)]"
+      />
+      <div className="mx-auto max-w-6xl px-4 pt-20 pb-20 sm:px-8 lg:pt-28 lg:pb-28">
+        <p data-cap-entra className="flex items-center gap-3 text-sm font-medium tracking-[0.18em] text-tinta/70 uppercase">
           <span aria-hidden="true" className="h-3 w-1.5 bg-laranja" />
           Capacidades
         </p>
@@ -72,7 +83,7 @@ export function Capacidades() {
           <h2 data-cap-entra className="max-w-[16ch] text-[clamp(2rem,5vw,4rem)] leading-[1.05] font-bold tracking-tight">
             Do site de uma página ao sistema sob medida.
           </h2>
-          <p data-cap-entra className="max-w-md text-lg leading-relaxed text-cinza lg:justify-self-end">
+          <p data-cap-entra className="max-w-md text-lg leading-relaxed text-tinta/70 lg:justify-self-end">
             Cada tipo de site tem a tecnologia certa por trás. Você não precisa escolher: a gente indica na conversa.
           </p>
         </div>
@@ -90,7 +101,7 @@ export function Capacidades() {
                 className="absolute inset-0 -z-10 bg-tinta transition-[clip-path] duration-500 ease-vexiom [clip-path:polygon(0_0,0_0,calc(var(--d)*-1)_100%,calc(var(--d)*-1)_100%)] group-hover:[clip-path:polygon(0_0,calc(100%+var(--d))_0,100%_100%,calc(var(--d)*-1)_100%)]"
               />
               <div className="grid gap-x-8 gap-y-3 px-1 py-7 transition-colors duration-300 group-hover:text-papel sm:px-4 lg:grid-cols-[3rem_1.4fr_1fr_12rem] lg:items-center lg:py-9">
-                <span className="text-sm font-semibold text-cinza tabular-nums transition-colors group-hover:text-laranja">
+                <span className="text-sm font-semibold text-tinta/70 tabular-nums transition-colors group-hover:text-laranja">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
@@ -98,7 +109,7 @@ export function Capacidades() {
                     {c.nome}
                     <span aria-hidden="true" className="h-[0.6em] w-[0.3em] scale-y-0 bg-laranja transition-transform duration-300 ease-vexiom group-hover:scale-y-100" />
                   </h3>
-                  <p className="mt-2 max-w-md leading-relaxed text-cinza transition-colors group-hover:text-papel/75">{c.texto}</p>
+                  <p className="mt-2 max-w-md leading-relaxed text-tinta/70 transition-colors group-hover:text-papel/75">{c.texto}</p>
                 </div>
                 <ul className="flex flex-wrap gap-2" aria-label="Tecnologias">
                   {c.tecnologias.map((t) => (
@@ -112,7 +123,7 @@ export function Capacidades() {
             </li>
           ))}
         </ol>
-        <p data-cap-entra className="mt-8 max-w-2xl text-cinza">
+        <p data-cap-entra className="mt-8 max-w-2xl text-tinta/70">
           Em todos os planos: hospedagem, domínio, certificado de segurança, backup e até 4 alterações por mês na mensalidade.
         </p>
       </div>
