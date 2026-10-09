@@ -41,7 +41,7 @@ export function Hero() {
         <TextoDigitado
           as="h1"
           texto="Um site que traz clientes. Agora é simples."
-          className="mt-5 block max-w-[14ch] texto-display text-balance"
+          className="mt-5 block max-w-[14ch] texto-hero text-balance"
         />
         <p data-hero-entra data-primeiro-quadro className="mt-7 max-w-xl texto-corpo text-cinza">
           A gente cria, publica e cuida do site do seu negócio. Você só responde os clientes no WhatsApp.

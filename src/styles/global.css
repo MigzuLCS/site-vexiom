@@ -120,6 +120,14 @@ section[tabindex='-1']:focus {
 /* Escala tipográfica do style guide (Figma "Vexiom — Site" › 01 · Identidade Visual).
    Celular → desktop, crescendo com a tela. Títulos de seção do site são frases de destaque:
    usam o nível Display (o H2 de 32 px do guia fica pequeno para elas). */
+@utility texto-hero {
+  /* Hero, Red Hat Display Medium · 44 → 100 (nível acima do Display, só no título do hero) */
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.75rem, 1.1rem + 5.6vw, 6.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+}
 @utility texto-display {
   /* Red Hat Display Medium · 40/46 → 72/80 */
   font-family: var(--font-display);

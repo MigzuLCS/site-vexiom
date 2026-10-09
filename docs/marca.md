@@ -47,7 +47,8 @@ Definida no style guide do Figma ("Vexiom — Site", página 01 · Identidade Vi
 - **Escala** (classes em `global.css`; use-as em vez de tamanhos soltos):
   | Classe | Guia | Celular → desktop | Onde |
   |---|---|---|---|
-  | `texto-display` | Display, Red Hat Medium | 40/46 → 72/80 | hero e títulos de seção (frases de destaque) |
+  | `texto-hero` | Hero, Red Hat Medium | 44 → 100 | só o título do hero |
+  | `texto-display` | Display, Red Hat Medium | 40/46 → 72/80 | títulos de seção (frases de destaque) |
   | `texto-h1` | H1, Red Hat Medium | 32/38 → 48/56 | links do menu do celular |
   | `texto-h3` | H3, Red Hat SemiBold | 20/26 → 22/30 | nomes de passos, capacidades, projetos, planos, perguntas |
   | `texto-corpo` | Body, Montserrat Regular | 16/24 → 16/26 | parágrafos |
