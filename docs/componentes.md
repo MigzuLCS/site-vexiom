@@ -41,6 +41,7 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 | FaixaVelocidade | React Bits ScrollVelocity | fim de Capacidades | — | relógio do GSAP no lugar do motion, componente interno fora do render, pausa fora da tela, cópias com aria-hidden, separador = bloco laranja, reduzir movimento = ¼ da velocidade |
 | Grainient | React Bits Grainient (ogl, WebGL2) | fundo do Portfólio | ogl | sob demanda (next/dynamic, só desktop e perto da tela), sem WebGL2 não faz nada, contexto liberado ao desmontar, reduzir movimento = ¼ da velocidade |
 | Trilho horizontal (Portfólio) | receita secao-horizontal-fixa | Portfólio | — | `data-horizontal` liga o layout em linha só no desktop com movimento; sem JS/reduzir = grade. O check ignora corte lateral de títulos dentro de `[data-horizontal]` |
+| Preços | estrutura do 21st efferd "Pricing Section with Frequency Toggle" (aprovado; refeito sem o código, cota do dia esgotada) + NumberFlow | Preços | @number-flow/react | chave Fundador ↔ Tabela (radiogroup), números em texto no HTML do build e NumberFlow só depois de montar |
 | Lista de capacidades | ideia de 21st Super Hover List (sem código copiado) | Capacidades | — | faixa Tinta diagonal no hover só em CSS; conteúdo todo visível sem hover |
 
 ## Pesquisa no 21st.dev
