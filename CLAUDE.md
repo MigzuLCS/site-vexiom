@@ -7,7 +7,7 @@ Site institucional e portfólio da **Vexiom**, estúdio de 3 sócios que cria si
 ## Stack
 - **Vite + React 19 + TypeScript + Tailwind v4.** Alias `@/` = `src/`.
 - **GSAP** (com ScrollTrigger, SplitText, CustomEase; todos os plugins são gratuitos) é o motor principal: timelines, rolagem, texto. Importe sempre de `@/lib/gsap` (registra plugins e a curva `vexiom`) e use `useGSAP` nos componentes.
-- **Lenis** para rolagem suave, já ligado ao relógio do GSAP em `src/components/SmoothScroll.tsx`. Não crie outra instância.
+- **Lenis** para rolagem suave, já ligado ao relógio do GSAP em `src/components/SmoothScroll.tsx`. Não crie outra instância. Links `#secao` passam por `irParaSecao` (mira o começo real de seções presas e, em saltos longos, cobre a tela com a cortina diagonal e pula direto, sem atravessar animações de rolagem).
 - **motion** (`motion/react`): para animações de componente e porque muitos componentes do React Bits dependem dele. O site já está dentro de `<MotionConfig reducedMotion="user">`.
 - **React Bits** e **21st.dev**: fontes de componentes prontos, instalados pelo CLI do shadcn. Como trazer e adaptar: `docs/componentes.md`.
 

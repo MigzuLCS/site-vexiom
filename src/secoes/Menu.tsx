@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger, useGSAP, REDUZIR, prefereReduzir } from '@/lib/gsap'
-import { travarRolagem } from '@/components/SmoothScroll'
+import { travarRolagem, emNavegacao } from '@/components/SmoothScroll'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import { linkWhatsapp } from '@/conteudo'
 import { cn } from '@/lib/utils'
@@ -56,7 +56,7 @@ export function Menu() {
       onUpdate: (st) => {
         sincronizar()
         if (prefereReduzir()) return
-        const esconder = st.direction === 1 && st.scroll() > 400
+        const esconder = st.direction === 1 && st.scroll() > 400 && !emNavegacao()
         gsap.to(raiz.current, { yPercent: esconder ? -160 : 0, duration: 0.4, overwrite: 'auto' })
       },
     })
