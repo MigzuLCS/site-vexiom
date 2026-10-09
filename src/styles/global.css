@@ -73,3 +73,9 @@
     }
   }
 }
+
+/* Cursor da marca: o bloco laranja pisca seco, como cursor de texto. */
+@keyframes piscar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

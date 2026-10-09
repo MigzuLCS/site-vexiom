@@ -30,7 +30,9 @@ npx shadcn@latest add "https://21st.dev/r/<autor>/<componente>"
 ## Componentes em uso
 | componente | origem | onde no site | dependências extras | adaptações |
 |---|---|---|---|---|
-| — | — | — | — | — |
+| GradeDiagonal | React Bits ShapeGrid | fundo do hero | — | cores da marca, retina, deriva 63,4°, blocos laranja 1:2, cursor pela janela, para fora da tela |
+| TextoDigitado | React Bits TextType | título do hero | — | cursor = bloco laranja, texto reserva espaço, frase completa para leitor de tela, reduzir movimento |
+| Button | shadcn | base dos botões | radix-ui, cva | import do cn corrigido |
 
 ## Pesquisa no 21st.dev
 As skills do 21st (`npx @21st-dev/cli install-skill`) e o CLI `21st` estão instalados para o usuário. Login uma vez com `npx @21st-dev/cli login` (abre o navegador; nada de chave na conversa).

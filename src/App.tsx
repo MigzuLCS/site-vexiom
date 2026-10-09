@@ -1,12 +1,16 @@
-// Página provisória: só para o check rodar. O site começa quando o docs/DIRECTION.md for aprovado.
+import { Hero } from '@/secoes/Hero'
+
+// Seções entram uma a uma (docs/DIRECTION.md). Contato provisório até a seção existir.
 export default function App() {
   return (
-    <main className="grid min-h-svh place-items-center px-4">
-      <div className="text-center">
-        <img src="/brand/vexiom-horizontal-claro.svg" alt="" className="mx-auto h-12 w-auto" />
-        <h1 className="mt-6 text-2xl font-semibold">Vexiom</h1>
-        <p className="mt-2 text-cinza">Site em construção.</p>
-      </div>
+    <main>
+      <Hero />
+      <section id="contato" className="min-h-svh bg-azul px-4 py-24 text-papel sm:px-8">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="text-3xl font-bold">Contato</h2>
+          <p className="mt-3 text-papel/80">[PREENCHER] WhatsApp, Instagram e e-mail.</p>
+        </div>
+      </section>
     </main>
   )
 }

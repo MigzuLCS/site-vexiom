@@ -1,0 +1,43 @@
+import { useEffect, useState, type ElementType } from 'react'
+import { prefereReduzir } from '@/lib/gsap'
+import { cn } from '@/lib/utils'
+
+// Adaptado de React Bits "TextType" (uma frase, sem apagar).
+// Mudanças: o cursor é o bloco laranja do símbolo; o texto inteiro já ocupa o espaço
+// desde o início (a parte ainda não digitada fica transparente), então nada pula;
+// leitores de tela e buscadores leem a frase completa; com "reduzir movimento"
+// a frase aparece pronta.
+type Props = {
+  texto: string
+  as?: ElementType
+  className?: string
+  atraso?: number
+  velocidade?: { min: number; max: number }
+}
+
+export function TextoDigitado({ texto, as: Tag = 'span', className, atraso = 400, velocidade = { min: 35, max: 85 } }: Props) {
+  const [n, setN] = useState(() => (typeof window !== 'undefined' && prefereReduzir() ? texto.length : 0))
+
+  useEffect(() => {
+    if (n >= texto.length) return
+    const espera = n === 0 ? atraso : velocidade.min + Math.random() * (velocidade.max - velocidade.min)
+    const t = setTimeout(() => setN((v) => v + 1), espera)
+    return () => clearTimeout(t)
+  }, [n, texto, atraso, velocidade.min, velocidade.max])
+
+  return (
+    <Tag className={className}>
+      <span className="sr-only">{texto}</span>
+      <span aria-hidden="true">
+        {texto.slice(0, n)}
+        <span
+          className={cn(
+            'ml-[0.06em] inline-block h-[0.82em] w-[0.38em] translate-y-[0.06em] bg-laranja align-baseline',
+            n >= texto.length && 'animate-[piscar_1.05s_steps(1)_infinite]',
+          )}
+        />
+        <span className="text-transparent">{texto.slice(n)}</span>
+      </span>
+    </Tag>
+  )
+}
